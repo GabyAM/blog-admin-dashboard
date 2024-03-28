@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+:root {
+    --green-900: #0e430a;
+    --green-700: #256020;
+    --green-500: #3f783a;
+    --green-400: #5a9155;
+    --green-300: #73aa6e;
+    --green-200: #92bd8f;
+    --green-100: #b1d0af;
+    --main-grey: #edeeef;
+    --dark-grey: #9999a3;
+
+    --space-100: 8px;
+    --space-200: 12px;
+    --space-300: 16px;
+    --space-400: 24px;
+    --space-500: 32px;
+    --space-600: 48px;
+    --space-700: 72px;
+    --space-800: 96px;
+    --space-900: 160px;
+}
+
+html,
+body,
+#root {
+    min-height: 100vh;
+}
+
+body,
+button,
+input,
+textarea {
+    font-family: 'Poppins';
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+}
+
+ul {
+    list-style: none;
+}
+
+.title-primary {
+    font-family: 'Playfair Display';
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
+}

@@ -1,0 +1,13 @@
+.main-layout {
+    display: grid;
+    grid-template-columns: 1fr 3.5fr;
+    min-height: 100vh;
+}
+
+.content-container {
+    gap: var(--space-500);
+}
+
+.container {
+    gap: var(--space-600);
+}

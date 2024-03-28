@@ -1,0 +1,4 @@
+export function EditPost() {
+    return (
+    );
+}

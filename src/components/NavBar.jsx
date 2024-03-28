@@ -1,3 +1,5 @@
+import '../styles/navbar.css';
+
 export function NavBar() {
     return (
         <aside className="main-navbar flex-col">

@@ -1,0 +1,23 @@
+aside.main-navbar {
+    height: 100%;
+    position: sticky;
+    border-right: 1px solid var(--main-grey);
+
+    padding: var(--space-500);
+    gap: var(--space-700);
+}
+
+.main-navbar .logo-container {
+    max-width: var(--space-800);
+    aspect-ratio: 271/80;
+}
+
+.main-navbar li {
+    color: var(--green-500);
+    font-weight: 700;
+    font-size: 24px;
+}
+
+.sections-list {
+    gap: var(--space-400);
+}

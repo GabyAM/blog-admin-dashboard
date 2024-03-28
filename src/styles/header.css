@@ -1,0 +1,23 @@
+header {
+    display: grid;
+    grid-template-columns: 1fr 2.5fr 1fr;
+    padding: var(--space-300);
+    gap: var(--space-600);
+}
+
+header .new-post-button {
+    background: linear-gradient(to right, var(--green-900), var(--green-500));
+    border: none;
+    border-radius: 100vh;
+    font-size: 20px;
+    font-weight: 500;
+    color: white;
+}
+
+.main-search-bar-section .main-search-bar {
+    width: 100%;
+    border: 1px solid var(--dark-grey);
+    border-radius: 100vh;
+
+    padding: var(--space-100) var(--space-400);
+}

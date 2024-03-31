@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { EditPost } from './components/EditPost';
+import { LoginForm } from './components/LoginForm';
 
 export function Router() {
     const router = createBrowserRouter([
@@ -13,6 +14,10 @@ export function Router() {
                     element: <EditPost></EditPost>
                 }
             ]
+        },
+        {
+            path: '/login',
+            element: <LoginForm></LoginForm>
         }
     ]);
 

@@ -1,13 +1,18 @@
 import { useNavigate } from 'react-router-dom';
 import '../styles/header.css';
+import { useAuth } from '../hooks/useAuth';
 
 export function Header() {
     const navigate = useNavigate();
+    const { encodedToken: token } = useAuth();
     async function handleCreatePost() {
         try {
             const response = await fetch('http://localhost:3000/post', {
                 method: 'POST',
-                credentials: 'include'
+                credentials: 'include',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             });
             if (!response.ok) {
                 throw new Error('Failed at creating post');

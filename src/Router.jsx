@@ -2,6 +2,8 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { EditPost } from './components/EditPost';
 import { LoginForm } from './components/LoginForm';
+import { Drafts } from './components/Drafts';
+import { Posts } from './components/Posts';
 
 export function Router() {
     const router = createBrowserRouter([
@@ -12,6 +14,10 @@ export function Router() {
                 {
                     path: '/post/:id',
                     element: <EditPost></EditPost>
+                },
+                {
+                    path: '/posts',
+                    element: <Posts></Posts>
                 },
                 {
                     path: '/drafts',

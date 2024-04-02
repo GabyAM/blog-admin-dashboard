@@ -12,6 +12,10 @@ export function Router() {
                 {
                     path: '/post/:id',
                     element: <EditPost></EditPost>
+                },
+                {
+                    path: '/drafts',
+                    element: <Drafts></Drafts>
                 }
             ]
         },

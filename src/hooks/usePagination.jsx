@@ -78,6 +78,7 @@ export function usePagination(url, limit) {
         loading,
         error,
         fetchNextPage,
+        hasNextPage: nextPageParams !== null,
         loadingNextPage,
         nextPageError
     };

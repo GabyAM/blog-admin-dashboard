@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import he from 'he';
+import '../styles/postcard.css';
 
-export function PostCard({ post }) {
+export function PostCard({ post, isPublished }) {
     return (
         <div className="post-card">
             <div className="main-section">
@@ -21,7 +22,11 @@ export function PostCard({ post }) {
                 >
                     <button>Edit</button>
                 </Link>
-                <button className="post-publish-button">Publish</button>
+                {isPublished ? (
+                    <button className="post-unpublish-button">Unpublish</button>
+                ) : (
+                    <button className="post-publish-button">Publish</button>
+                )}
             </div>
         </div>
     );

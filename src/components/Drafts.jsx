@@ -1,4 +1,5 @@
 import { usePagination } from '../hooks/usePagination';
+import '../styles/posts.css';
 import { PostCard } from './PostCard';
 import { PostCardSkeleton } from './PostCardSkeleton';
 
@@ -9,11 +10,12 @@ export function Drafts() {
         error,
         fetchNextPage,
         loadingNextPage,
+        hasNextPage
     } = usePagination('http://localhost:3000/unpublished_posts', 4);
 
     return (
-        <>
-            <h1>Unpublished posts</h1>
+        <section>
+            <h1 className="section-title">Unpublished posts</h1>
             <div className="posts-grid">
                 {loading ? (
                     <>
@@ -41,6 +43,11 @@ export function Drafts() {
                     </>
                 )}
             </div>
-        </>
+            {hasNextPage && !loading && !loadingNextPage && (
+                <button className="load-more-button" onClick={fetchNextPage}>
+                    Load more
+                </button>
+            )}
+        </section>
     );
 }

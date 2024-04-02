@@ -1,0 +1,90 @@
+.post-card {
+    display: grid;
+    grid-template-rows: 3fr 1fr;
+    padding: var(--space-500);
+    gap: var(--space-500);
+
+    border: 1px solid var(--main-grey);
+    border-radius: var(--space-300);
+}
+
+.post-card .main-section {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-500);
+}
+
+.main-section .text-section {
+    overflow: hidden;
+    gap: var(--space-100);
+}
+
+.post-card .main-section h2 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline;
+    font-size: 20px;
+}
+
+.post-card .main-section p {
+    font-size: 12px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+
+.post-card .post-thumbnail {
+    aspect-ratio: 1/1;
+    width: 120px;
+}
+
+.post-card .actions {
+    padding: 0.25em;
+    gap: var(--space-200);
+}
+
+.post-card .actions > * {
+    flex-basis: 28%;
+    border-radius: 100vh;
+    font-weight: 700;
+}
+
+.post-delete-button {
+    border: 1px solid var(--main-red);
+    color: var(--main-red);
+    background-color: transparent;
+}
+
+.post-edit-button {
+    border: 1px solid var(--green-900);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+.post-edit-button button {
+    font-weight: 700;
+    border: none;
+    color: var(--green-900);
+    background-color: transparent;
+}
+
+.post-card .actions > button:last-of-type,
+.post-card .actions > span:last-of-type {
+    border: none;
+    margin-right: 0;
+    margin-left: auto;
+}
+
+.post-publish-button {
+    background-color: var(--green-500);
+    color: white;
+}
+
+.post-unpublish-button {
+    background-color: var(--main-grey);
+    color: var(--green-900);
+}

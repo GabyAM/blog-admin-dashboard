@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import '../styles/imageinput.css';
+import { ImageIcon } from './Icons';
 
 export function ImageInput({ initialValue, onChange }) {
     function handleInputChange(e) {
@@ -16,6 +18,7 @@ export function ImageInput({ initialValue, onChange }) {
                     <span>Upload an image</span>
                     <ImageIcon width={96} height={96}></ImageIcon>
                 </div>
+            </label>
             <input
                 id="image-file-input"
                 type="file"

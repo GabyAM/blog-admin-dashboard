@@ -1,0 +1,55 @@
+.image-input-container {
+    display: grid;
+    aspect-ratio: 1.9/1;
+    max-width: fit-content;
+    height: 225px;
+}
+.image-input-container > * {
+    grid-area: 1/1/2/2;
+}
+
+.image-input-container .custom-image-input {
+    z-index: 1;
+}
+.image-input-container.image-input-container.uploaded .custom-image-input {
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+}
+
+.image-input-container.uploaded img {
+    z-index: 0;
+}
+
+#image-file-input {
+    display: none;
+}
+
+.custom-image-input {
+    display: block;
+    background-color: var(--green-100);
+    color: var(--green-900);
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--space-300);
+}
+
+.custom-image-input div {
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.custom-image-input:hover > div {
+    transition: transform 0.3s ease;
+    transform: scale(1.05);
+}
+
+.custom-image-input span {
+    font-size: 32px;
+}
+
+.image-input-container img {
+    border-radius: var(--space-300);
+    overflow: hidden;
+    object-fit: cover;
+}

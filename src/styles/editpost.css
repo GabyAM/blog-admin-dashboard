@@ -1,0 +1,40 @@
+.post-headings {
+    gap: var(--space-100);
+    max-width: 600px;
+}
+
+.post-headings input,
+.post-headings textarea {
+    font-weight: 500;
+    border: none;
+    padding: var(--space-100);
+    margin-left: calc(var(--space-100) * -1);
+}
+
+.post-title-input {
+    font-size: 32px;
+    font-family: 'Playfair Display';
+    text-overflow: ellipsis;
+    color: var(--green-900);
+}
+
+.post-description-input {
+    font-size: 18px;
+    resize: none;
+    color: var(--dark-grey);
+    height: auto;
+    overflow-y: hidden;
+}
+
+.post-title-input:focus,
+.post-description-input:focus {
+    outline: 1px solid var(--main-grey);
+    border-radius: var(--space-300);
+}
+
+.save-post-button {
+    position: fixed;
+    bottom: var(--space-400);
+    right: var(--space-400);
+    z-index: 2;
+}

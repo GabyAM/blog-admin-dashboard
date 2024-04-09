@@ -3,6 +3,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import { ImageInput } from './ImageInput';
 import { useFetchData } from '../hooks/UseFetchData';
 import { useParams } from 'react-router-dom';
+import '../styles/editpost.css';
 import { useAuth } from '../hooks/useAuth';
 export function EditPost() {
     const { id } = useParams();

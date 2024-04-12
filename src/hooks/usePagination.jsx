@@ -11,6 +11,7 @@ export function usePagination(url, limit) {
     const [nextPageError, setNextPageError] = useState(null);
     const [nextPageParams, setNextPageParams] = useState(null);
     const [count, setCount] = useState(null);
+    const [refetchTrigger, setRefreshTrigger] = useState(false);
 
     useEffect(() => {
         async function fetchData() {
@@ -39,7 +40,7 @@ export function usePagination(url, limit) {
             }
         }
         fetchData();
-    }, [url]);
+    }, [url, refetchTrigger]);
 
     async function fetchNextPage() {
         if (!nextPageParams) {
@@ -72,6 +73,10 @@ export function usePagination(url, limit) {
         }
     }
 
+    function refetch() {
+        setRefreshTrigger((prev) => !prev);
+    }
+
     return {
         results,
         count,
@@ -80,6 +85,7 @@ export function usePagination(url, limit) {
         fetchNextPage,
         hasNextPage: nextPageParams !== null,
         loadingNextPage,
-        nextPageError
+        nextPageError,
+        refetch
     };
 }

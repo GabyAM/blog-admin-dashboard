@@ -1,20 +1,19 @@
-import { usePagination } from '../hooks/usePagination';
 import { PostCard } from './PostCard';
 import { PostCardSkeleton } from './PostCardSkeleton';
 
-export function Posts() {
-    const {
-        results: posts,
-        loading,
-        error,
-        fetchNextPage,
-        loadingNextPage,
-        hasNextPage
-    } = usePagination('http://localhost:3000/published_posts', 4);
-
+export function Posts({
+    title,
+    posts,
+    loading,
+    error,
+    fetchNextPage,
+    loadingNextPage,
+    hasNextPage,
+    updatePostStatus
+}) {
     return (
-        <section>
-            <h1 className="section-title">Published posts</h1>
+        <section className="main-section">
+            <h1 className="section-title">{title}</h1>
             <div className="posts-grid">
                 {loading ? (
                     <>
@@ -29,7 +28,7 @@ export function Posts() {
                         <PostCard
                             key={post._id}
                             post={post}
-                            isPublished={true}
+                            onToggleState={updatePostStatus}
                         ></PostCard>
                     ))
                 )}
@@ -43,7 +42,12 @@ export function Posts() {
                 )}
             </div>
             {hasNextPage && !loading && !loadingNextPage && (
-                <button className="load-more-button" onClick={fetchNextPage}>
+                <button
+                    className="load-more-button"
+                    onClick={() => {
+                        fetchNextPage();
+                    }}
+                >
                     Load more
                 </button>
             )}

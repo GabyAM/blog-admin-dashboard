@@ -3,7 +3,8 @@ import { Layout } from './components/Layout';
 import { EditPost } from './components/EditPost';
 import { LoginForm } from './components/LoginForm';
 import { Drafts } from './components/Drafts';
-import { Posts } from './components/Posts';
+import { PublishedPosts } from './components/PublishedPosts';
+import { AllPosts } from './components/AllPosts';
 
 export function Router() {
     const router = createBrowserRouter([
@@ -17,10 +18,14 @@ export function Router() {
                 },
                 {
                     path: '/posts',
-                    element: <Posts></Posts>
+                    element: <AllPosts></AllPosts>
                 },
                 {
-                    path: '/drafts',
+                    path: '/posts/published',
+                    element: <PublishedPosts></PublishedPosts>
+                },
+                {
+                    path: '/posts/drafts',
                     element: <Drafts></Drafts>
                 }
             ]

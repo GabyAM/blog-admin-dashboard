@@ -11,6 +11,7 @@
     --green-100: #b1d0af;
     --main-grey: #edeeef;
     --dark-grey: #9999a3;
+    --main-red: #ea7272;
 
     --space-100: 8px;
     --space-200: 12px;
@@ -69,4 +70,40 @@ ul {
     width: 90%;
     max-width: 1000px;
     margin: 0 auto;
+}
+
+.action-button {
+    border-radius: 100vh;
+    font-weight: 700;
+}
+a.action-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+}
+
+.action-button.primary-button {
+    background-color: var(--green-500);
+    color: white;
+    border: none;
+}
+
+.action-button.secondary-button {
+    background-color: var(--main-grey);
+    color: var(--green-900);
+    border: none;
+}
+
+.action-button.green-outline {
+    background-color: transparent;
+    color: var(--green-900);
+    border: 1px solid var(--green-900);
+}
+
+.action-button.red-outline {
+    background-color: transparent;
+    color: var(--main-red);
+    border: 1px solid var(--main-red);
 }

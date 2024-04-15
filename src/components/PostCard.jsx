@@ -15,23 +15,23 @@ export function PostCard({ post, onToggleState }) {
                 </div>
             </div>
             <div className="actions flex-row">
-                <button className="post-delete-button">Delete</button>
+                <button className="action-button red-outline">Delete</button>
                 <Link
-                    className="button-container post-edit-button"
+                    className="action-button green-outline"
                     to={`/post/${post._id}`}
                 >
-                    <button>Edit</button>
+                    Edit
                 </Link>
                 {post.is_published ? (
                     <button
-                        className="post-unpublish-button"
+                        className="action-button secondary-button"
                         onClick={(e) => onToggleState(e.target, post._id)}
                     >
                         Unpublish
                     </button>
                 ) : (
                     <button
-                        className="post-publish-button"
+                        className="action-button primary-button"
                         onClick={(e) => onToggleState(e.target, post._id)}
                     >
                         Publish

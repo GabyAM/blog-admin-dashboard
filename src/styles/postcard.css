@@ -49,27 +49,7 @@
     flex-basis: 28%;
     border-radius: 100vh;
     font-weight: 700;
-}
-
-.post-delete-button {
-    border: 1px solid var(--main-red);
-    color: var(--main-red);
-    background-color: transparent;
-}
-
-.post-edit-button {
-    border: 1px solid var(--green-900);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-}
-
-.post-edit-button button {
-    font-weight: 700;
-    border: none;
-    color: var(--green-900);
-    background-color: transparent;
+    font-size: 14px;
 }
 
 .post-card .actions > button:last-of-type,

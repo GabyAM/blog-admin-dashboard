@@ -1,12 +1,15 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 
-export function Comment({ comment }) {
+export function Comment({ comment, onEdit }) {
     const text = useRef(null);
     const [commentText, setCommentText] = useState(comment.text);
     const [isOverflown, setIsOverflown] = useState(false);
     const [textHidden, setTextHidden] = useState(true);
 
+    useEffect(() => {
+        setCommentText(comment.text);
+    }, [comment]);
     useEffect(() => {
         if (text.current) {
             const textHeight = text.current.getBoundingClientRect().height;
@@ -17,7 +20,10 @@ export function Comment({ comment }) {
     const [isEditing, setIsEditing] = useState(false);
 
     return (
-        <div className={`comment-container-wrapper flex-col`} key={comment._id}>
+        <div
+            className={`comment-container-wrapper flex-col ${comment.isPending ? 'pending' : ''}`}
+            key={comment._id}
+        >
             <h3>
                 {comment.parent_comment
                     ? `In response to a comment on post "${comment.post.title}"`

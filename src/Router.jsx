@@ -5,6 +5,7 @@ import { LoginForm } from './components/LoginForm';
 import { Drafts } from './components/Drafts';
 import { PublishedPosts } from './components/PublishedPosts';
 import { AllPosts } from './components/AllPosts';
+import { Comments } from './components/Comments';
 
 export function Router() {
     const router = createBrowserRouter([
@@ -27,6 +28,10 @@ export function Router() {
                 {
                     path: '/posts/drafts',
                     element: <Drafts></Drafts>
+                },
+                {
+                    path: '/comments',
+                    element: <Comments></Comments>
                 }
             ]
         },

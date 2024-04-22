@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
+import { DeleteIcon, EditIcon, VerticalDotsIcon } from './Icons';
+import { PopupMenu } from './PopupMenu';
 
 export function Comment({ comment, onEdit }) {
     const text = useRef(null);
@@ -18,6 +20,7 @@ export function Comment({ comment, onEdit }) {
     }, []);
 
     const [isEditing, setIsEditing] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
         <div
@@ -78,11 +81,44 @@ export function Comment({ comment, onEdit }) {
                                 </>
                             )}
                         </div>
+                        <div className="comment-options-section">
+                            <button
+                                onClick={() => setIsMenuOpen(true)}
+                                className="icon-container more-button"
+                            >
+                                <VerticalDotsIcon></VerticalDotsIcon>
+                            </button>
+                            {isMenuOpen && (
+                                <PopupMenu
+                                    onClickOutside={() => setIsMenuOpen(false)}
+                                >
+                                    <button
+                                        onClick={() => {
+                                            setIsEditing(true);
+                                            setIsMenuOpen(false);
+                                        }}
+                                        className="popup-menu-option"
+                                    >
+                                        <EditIcon></EditIcon>
+                                        <span>Edit</span>
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            setIsMenuOpen(false);
+                                        }}
+                                        className="popup-menu-option"
+                                    >
+                                        <DeleteIcon></DeleteIcon>
+                                        <span>Delete</span>
+                                    </button>
+                                </PopupMenu>
+                            )}
+                        </div>
                     </div>
-                    <div
-                        className={`comment-actions ${isEditing ? 'edit-mode' : ''}`}
-                    >
-                        {isEditing ? (
+                    {isEditing && (
+                        <div
+                            className={`comment-actions ${isEditing ? 'edit-mode' : ''}`}
+                        >
                             <>
                                 <button
                                     onClick={() => setIsEditing(false)}
@@ -100,29 +136,8 @@ export function Comment({ comment, onEdit }) {
                                     Submit
                                 </button>
                             </>
-                        ) : (
-                            <>
-                                <button
-                                    disabled={comment.isPending}
-                                    className="action-button delete-button red-outline"
-                                >
-                                    Delete
-                                </button>
-                                <button
-                                    disabled={comment.isPending}
-                                    onClick={() => setIsEditing(true)}
-                                    className="action-button edit-button green-outline"
-                                >
-                                    Edit
-                                </button>
-                                <Link
-                                    className={`action-button primary-button replies-button ${comment.isPending ? 'disabled' : ''}`}
-                                >
-                                    See replies
-                                </Link>
-                            </>
-                        )}
-                    </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

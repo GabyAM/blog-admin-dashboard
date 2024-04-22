@@ -1,0 +1,4 @@
+.comments {
+    max-width: 60%;
+    gap: var(--space-500);
+}

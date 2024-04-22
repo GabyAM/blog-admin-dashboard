@@ -1,5 +1,6 @@
 import { usePagination } from '../hooks/usePagination';
 import { Comment } from './Comment';
+import '../styles/comments.css';
 import { useAuth } from '../hooks/useAuth';
 import toast from 'react-hot-toast';
 

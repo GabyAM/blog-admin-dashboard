@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import '../styles/comment.css';
 import { useEffect, useRef, useState } from 'react';
 import { DeleteIcon, EditIcon, VerticalDotsIcon } from './Icons';
 import { PopupMenu } from './PopupMenu';

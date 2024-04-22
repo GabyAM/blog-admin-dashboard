@@ -3,6 +3,7 @@ import { Comment } from './Comment';
 import '../styles/comments.css';
 import { useAuth } from '../hooks/useAuth';
 import toast from 'react-hot-toast';
+import { CommentSkeleton } from './CommentSkeleton';
 
 export function Comments() {
     const { encodedToken } = useAuth();
@@ -104,7 +105,14 @@ export function Comments() {
         <section>
             <h2 className="section-title">Comments</h2>
             <div className="comments flex-col">
-                {!loading &&
+                {loading ? (
+                    <>
+                        <CommentSkeleton></CommentSkeleton>
+                        <CommentSkeleton></CommentSkeleton>
+                        <CommentSkeleton></CommentSkeleton>
+                        <CommentSkeleton></CommentSkeleton>
+                    </>
+                ) : (
                     !error &&
                     comments.map((comment) => (
                         <Comment
@@ -113,8 +121,14 @@ export function Comments() {
                             onEdit={submitPostEdit}
                             onDelete={submitPostDelete}
                         ></Comment>
-                    ))}
-                {hasNextPage && !loading && !loadingNextPage && (
+                    ))
+                )}
+                {hasNextPage && !loading && loadingNextPage ? (
+                    <>
+                        <CommentSkeleton></CommentSkeleton>
+                        <CommentSkeleton></CommentSkeleton>
+                    </>
+                ) : (
                     <button
                         className="load-more-button"
                         onClick={() => {

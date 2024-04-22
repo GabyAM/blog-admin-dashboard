@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
+import '../styles/popupmenu.css';
 
 export function PopupMenu({ children, onClickOutside }) {
     const ref = useRef(null);

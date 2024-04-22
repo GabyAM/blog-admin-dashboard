@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { DeleteIcon, EditIcon, VerticalDotsIcon } from './Icons';
 import { PopupMenu } from './PopupMenu';
 
-export function Comment({ comment, onEdit }) {
+export function Comment({ comment, onEdit, onDelete }) {
     const text = useRef(null);
     const [commentText, setCommentText] = useState(comment.text);
     const [isOverflown, setIsOverflown] = useState(false);
@@ -104,6 +104,7 @@ export function Comment({ comment, onEdit }) {
                                     </button>
                                     <button
                                         onClick={() => {
+                                            onDelete(comment._id);
                                             setIsMenuOpen(false);
                                         }}
                                         className="popup-menu-option"

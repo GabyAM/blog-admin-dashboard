@@ -60,6 +60,45 @@ export function Comments() {
         });
     }
 
+    function submitPostDelete(id) {
+        const commentIndex = comments.findIndex(
+            (comment) => comment._id === id
+        );
+        const prevComment = comments[commentIndex];
+
+        updateComment(commentIndex, { isPending: true });
+
+        const promise = fetch(`http://localhost:3000/comment/${id}/delete`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `bearer ${encodedToken}`
+            }
+        })
+            .then(() =>
+                setComments((prevComments) => {
+                    const newComments = [...prevComments];
+                    newComments.splice(commentIndex, 1);
+                    return newComments;
+                })
+            )
+            .catch((e) => {
+                setComments((prevComments) => {
+                    const newComments = [...prevComments];
+                    newComments.splice(commentIndex, 0, prevComment);
+                    return newComments;
+                });
+                throw new Error(e.message);
+            });
+
+        toast.promise(promise, {
+            loading: 'Deleting comment...',
+            success: 'Comment deleted!',
+            error: "Couldn't delete comment"
+        });
+    }
+
     return (
         <section>
             <h2 className="section-title">Comments</h2>
@@ -71,6 +110,7 @@ export function Comments() {
                             key={comment._id}
                             comment={comment}
                             onEdit={submitPostEdit}
+                            onDelete={submitPostDelete}
                         ></Comment>
                     ))}
                 {hasNextPage && !loading && !loadingNextPage && (

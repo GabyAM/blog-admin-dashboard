@@ -71,7 +71,11 @@ export function AllPosts() {
                     return newPosts;
                 });
 
-                setOtherPosts((prevPosts) => [post, ...prevPosts]);
+                setOtherPosts((prevPosts) => {
+                    const newPosts = [...prevPosts];
+                    newPosts[postIndex] = { ...post, is_published: !published };
+                    return newPosts;
+                });
             })
             .catch((e) => {
                 setPosts((prevPosts) => {

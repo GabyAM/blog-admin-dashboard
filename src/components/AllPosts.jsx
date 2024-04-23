@@ -8,26 +8,39 @@ export function AllPosts() {
 
     const {
         results: unpublishedPosts,
+        setResults: setUnpublishedPosts,
         loading: loadingUnpublishedPosts,
         error: errorUnpublishedPosts,
         fetchNextPage: fetchNextPageUnpublished,
         loadingNextPage: loadingNextPageUnpublished,
-        hasNextPage: hasNextPageUnpublished,
-        refetch: refetchUnpublishedPosts
+        hasNextPage: hasNextPageUnpublished
     } = usePagination('http://localhost:3000/unpublished_posts', 4);
 
     const {
         results: publishedPosts,
+        setResults: setPublishedPosts,
         loading: loadingPublishedPosts,
         error: errorPublishedPosts,
         fetchNextPage: fetchNextPagePublished,
         loadingNextPage: loadingNextPagePublished,
-        hasNextPage: hasNextPagePublished,
-        refetch: refetchPublishedPosts
+        hasNextPage: hasNextPagePublished
     } = usePagination('http://localhost:3000/published_posts', 4);
 
-    function updatePostStatus(published, button, id) {
-        button.disabled = true;
+    function updatePostStatus(published, id) {
+        const posts = published ? publishedPosts : unpublishedPosts;
+
+        const setPosts = published ? setPublishedPosts : setUnpublishedPosts;
+        const setOtherPosts = published
+            ? setUnpublishedPosts
+            : setPublishedPosts;
+
+        const postIndex = posts.findIndex((post) => post._id === id);
+        const post = posts[postIndex];
+        setPosts((prevPosts) => {
+            const posts = [...prevPosts];
+            posts[postIndex] = { ...posts[postIndex], isPending: true };
+            return posts;
+        });
         const promise = fetch(
             `http://localhost:3000/post/${id}/${published ? 'unpublish' : 'publish'}`,
             {
@@ -52,11 +65,20 @@ export function AllPosts() {
                         "The post doesn't meet the requirements to be published"
                     );
                 }
-                refetchPublishedPosts();
-                refetchUnpublishedPosts();
+                setPosts((prevPosts) => {
+                    const newPosts = [...prevPosts];
+                    newPosts.splice(postIndex, 1);
+                    return newPosts;
+                });
+
+                setOtherPosts((prevPosts) => [post, ...prevPosts]);
             })
             .catch((e) => {
-                button.disabled = false;
+                setPosts((prevPosts) => {
+                    const newPosts = [...prevPosts];
+                    newPosts[postIndex] = post;
+                    return newPosts;
+                });
                 throw new Error(e.message);
             });
 
@@ -76,9 +98,7 @@ export function AllPosts() {
                 fetchNextPage={fetchNextPageUnpublished}
                 loadingNextPage={loadingNextPageUnpublished}
                 hasNextPage={hasNextPageUnpublished}
-                updatePostStatus={(button, id) =>
-                    updatePostStatus(false, button, id)
-                }
+                updatePostStatus={(id) => updatePostStatus(false, id)}
             ></Posts>
             <Posts
                 title={'Published posts'}
@@ -88,9 +108,7 @@ export function AllPosts() {
                 fetchNextPage={fetchNextPagePublished}
                 loadingNextPage={loadingNextPagePublished}
                 hasNextPage={hasNextPagePublished}
-                updatePostStatus={(button, id) =>
-                    updatePostStatus(true, button, id)
-                }
+                updatePostStatus={(id) => updatePostStatus(true, id)}
             ></Posts>
         </>
     );

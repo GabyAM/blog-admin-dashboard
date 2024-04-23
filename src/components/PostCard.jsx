@@ -11,7 +11,7 @@ import {
 } from './Icons';
 import { PopupMenu } from './PopupMenu';
 
-export function PostCard({ post, onToggleState }) {
+export function PostCard({ post, onToggleState, onDelete }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
@@ -62,6 +62,7 @@ export function PostCard({ post, onToggleState }) {
                         <button
                             onClick={() => {
                                 setIsMenuOpen(false);
+                                onDelete(post._id);
                             }}
                             className="popup-menu-option"
                         >

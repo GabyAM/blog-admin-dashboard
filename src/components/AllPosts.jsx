@@ -88,6 +88,47 @@ export function AllPosts() {
             error: (error) => `${error.message}`
         });
     }
+
+    function deletePost(published, id) {
+        const postIndex = published
+            ? publishedPosts.findIndex((post) => post._id === id)
+            : unpublishedPosts.findIndex((post) => post._id === id);
+        const setPosts = published ? setPublishedPosts : setUnpublishedPosts;
+        setPosts((prevPosts) => {
+            const newPosts = [...prevPosts];
+            newPosts[postIndex] = { ...newPosts[postIndex], isPending: true };
+            return newPosts;
+        });
+        const promise = fetch(`http://localhost:3000/post/${id}/delete`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                Authorization: `bearer ${encodedToken}`,
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(() => {
+                setPosts((prevPosts) => {
+                    const newPosts = [...prevPosts];
+                    newPosts.splice(postIndex, 1);
+                    return newPosts;
+                });
+            })
+            .catch((e) => {
+                setPosts((prevPosts) => {
+                    const newPosts = [...prevPosts];
+                    newPosts[postIndex].isPending = false;
+                    return newPosts;
+                });
+                throw new Error("Couldn't delete the post");
+            });
+
+        toast.promise(promise, {
+            loading: 'Deleting post...',
+            success: 'Post deleted!',
+            error: (error) => `${error.message}`
+        });
+    }
     return (
         <>
             <Posts
@@ -99,6 +140,7 @@ export function AllPosts() {
                 loadingNextPage={loadingNextPageUnpublished}
                 hasNextPage={hasNextPageUnpublished}
                 updatePostStatus={(id) => updatePostStatus(false, id)}
+                deletePost={(id) => deletePost(false, id)}
             ></Posts>
             <Posts
                 title={'Published posts'}
@@ -109,6 +151,7 @@ export function AllPosts() {
                 loadingNextPage={loadingNextPagePublished}
                 hasNextPage={hasNextPagePublished}
                 updatePostStatus={(id) => updatePostStatus(true, id)}
+                deletePost={(id) => deletePost(true, id)}
             ></Posts>
         </>
     );

@@ -9,7 +9,8 @@ export function Posts({
     fetchNextPage,
     loadingNextPage,
     hasNextPage,
-    updatePostStatus
+    updatePostStatus,
+    deletePost
 }) {
     return (
         <section className="main-section">
@@ -29,6 +30,7 @@ export function Posts({
                             key={post._id}
                             post={post}
                             onToggleState={updatePostStatus}
+                            onDelete={deletePost}
                         ></PostCard>
                     ))
                 )}

@@ -1,6 +1,6 @@
 .post-card {
     display: grid;
-    grid-template-rows: 3fr 1fr;
+    grid-template-columns: auto 1fr auto;
     padding: var(--space-500);
     gap: var(--space-500);
 
@@ -14,12 +14,12 @@
     gap: var(--space-500);
 }
 
-.main-section .text-section {
+.post-card .text-section {
     overflow: hidden;
     gap: var(--space-100);
 }
 
-.post-card .main-section h2 {
+.post-card h2 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -27,7 +27,7 @@
     font-size: 20px;
 }
 
-.post-card .main-section p {
+.post-card p {
     font-size: 12px;
     display: -webkit-box;
     -webkit-box-orient: vertical;

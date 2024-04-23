@@ -1,24 +1,28 @@
+import toast from 'react-hot-toast';
 import { useAuth } from '../hooks/useAuth';
 import { usePagination } from '../hooks/usePagination';
-import '../styles/posts.css';
 import { Posts } from './Posts';
-import { toast } from 'react-hot-toast';
 
 export function Drafts() {
     const { encodedToken } = useAuth();
-
     const {
-        results,
+        results: posts,
+        setResults: setPosts,
         loading,
         error,
         fetchNextPage,
         loadingNextPage,
-        hasNextPage,
-        refetch
-    } = usePagination('http://localhost:3000/unpublished_posts', 4);
+        hasNextPage
+    } = usePagination(`http://localhost:3000/unpublished_posts`, 4);
 
-    function publishPost(button, id) {
-        button.disabled = true;
+    function handlePublishPost(id) {
+        const postIndex = posts.findIndex((post) => post._id === id);
+        const post = posts[postIndex];
+        setPosts((prevPosts) => {
+            const posts = [...prevPosts];
+            posts[postIndex] = { ...posts[postIndex], isPending: true };
+            return posts;
+        });
         const promise = fetch(`http://localhost:3000/post/${id}/publish`, {
             method: 'POST',
             credentials: 'include',
@@ -28,7 +32,7 @@ export function Drafts() {
         })
             .then((res) => {
                 if (!res.ok && res.status !== 400) {
-                    throw new Error(`couldn't publish the post`);
+                    throw new Error("couldn't publish the post");
                 }
                 return res.json();
             })
@@ -38,10 +42,18 @@ export function Drafts() {
                         "The post doesn't meet the requirements to be published"
                     );
                 }
-                refetch();
+                setPosts((prevPosts) => {
+                    const newPosts = [...prevPosts];
+                    newPosts.splice(postIndex, 1);
+                    return newPosts;
+                });
             })
             .catch((e) => {
-                button.disabled = false;
+                setPosts((prevPosts) => {
+                    const newPosts = [...prevPosts];
+                    newPosts[postIndex] = post;
+                    return newPosts;
+                });
                 throw new Error(e.message);
             });
 
@@ -52,16 +64,55 @@ export function Drafts() {
         });
     }
 
+    function deletePost(id) {
+        const postIndex = posts.findIndex((post) => post._id === id);
+        setPosts((prevPosts) => {
+            const newPosts = [...prevPosts];
+            newPosts[postIndex] = { ...newPosts[postIndex], isPending: true };
+            return newPosts;
+        });
+        const promise = fetch(`http://localhost:3000/post/${id}/delete`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                Authorization: `bearer ${encodedToken}`,
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(() => {
+                setPosts((prevPosts) => {
+                    const newPosts = [...prevPosts];
+                    newPosts.splice(postIndex, 1);
+                    return newPosts;
+                });
+            })
+            .catch((e) => {
+                setPosts((prevPosts) => {
+                    const newPosts = [...prevPosts];
+                    newPosts[postIndex].isPending = false;
+                    return newPosts;
+                });
+                throw new Error("Couldn't delete the post");
+            });
+
+        toast.promise(promise, {
+            loading: 'Deleting post...',
+            success: 'Post deleted!',
+            error: (error) => `${error.message}`
+        });
+    }
+
     return (
         <Posts
             title={'Drafts'}
-            posts={results}
+            posts={posts}
             loading={loading}
             error={error}
             fetchNextPage={fetchNextPage}
             loadingNextPage={loadingNextPage}
             hasNextPage={hasNextPage}
-            updatePostStatus={(button, id) => publishPost(button, id)}
+            updatePostStatus={(id) => handlePublishPost(id)}
+            deletePost={(id) => deletePost(id)}
         ></Posts>
     );
 }

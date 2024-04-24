@@ -9,6 +9,7 @@ export function UsersGrid({
     hasNextPage,
     loadingNextPage,
     nextPageError,
+    changeUserRole
 }) {
     return (
         <section className="main-section">

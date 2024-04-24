@@ -26,6 +26,7 @@ export function UserCard({ user, onChangeRole }) {
                 {currentUser.id !== user._id && (
                     <>
                         <button
+                            onClick={() => setIsMenuOpen(true)}
                             className="icon-container more-button"
                         >
                             <VerticalDotsIcon></VerticalDotsIcon>
@@ -36,6 +37,14 @@ export function UserCard({ user, onChangeRole }) {
                             >
                                 {!user.is_banned && (
                                     <button
+                                        onClick={() =>
+                                            onChangeRole(
+                                                user.is_admin
+                                                    ? 'demote'
+                                                    : 'promote',
+                                                user._id
+                                            )
+                                        }
                                         className="popup-menu-option"
                                     >
                                         {user.is_admin ? (
@@ -51,6 +60,12 @@ export function UserCard({ user, onChangeRole }) {
                                     </button>
                                 )}
                                 <button
+                                    onClick={() =>
+                                        onChangeRole(
+                                            user.is_banned ? 'unban' : 'ban',
+                                            user._id
+                                        )
+                                    }
                                     className="popup-menu-option"
                                 >
                                     {user.is_banned ? (

@@ -17,14 +17,17 @@ export function usePagination(url, limit) {
         async function fetchData() {
             setLoading(true);
             try {
-                const response = await fetch(`${url}?limit=${limit}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `bearer ${token}`
-                    },
-                    credentials: 'include'
-                });
+                const response = await fetch(
+                    `${url}${url.includes('?') ? '&' : '?'}limit=${limit}`,
+                    {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `bearer ${token}`
+                        },
+                        credentials: 'include'
+                    }
+                );
                 if (!response.ok) {
                     throw new Error('data fetch failed');
                 }
@@ -79,6 +82,7 @@ export function usePagination(url, limit) {
 
     return {
         results,
+        setResults,
         count,
         loading,
         error,

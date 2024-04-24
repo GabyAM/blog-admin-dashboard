@@ -138,3 +138,110 @@ export function UnpublishIcon({ width = 24, height = 24 }) {
         </svg>
     );
 }
+
+export function PromoteIcon({ width = 24, height = 24 }) {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width={width}
+            height={height}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="icon icon-tabler icons-tabler-outline icon-tabler-crown"
+        >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M12 6l4 6l5 -4l-2 10h-14l-2 -10l5 4z" />
+        </svg>
+    );
+}
+
+export function BanIcon({ width = 24, height = 24 }) {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width={width}
+            height={height}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="icon icon-tabler icons-tabler-outline icon-tabler-ban"
+        >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+            <path d="M5.7 5.7l12.6 12.6" />
+        </svg>
+    );
+}
+
+export function DemoteIcon({ width = 24, height = 24 }) {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width={width}
+            height={height}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="icon icon-tabler icons-tabler-outline icon-tabler-crown-off"
+        >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M18 18h-13l-1.865 -9.327a.25 .25 0 0 1 .4 -.244l4.465 3.571l1.6 -2.4m1.596 -2.394l.804 -1.206l4 6l4.464 -3.571a.25 .25 0 0 1 .401 .244l-1.363 6.818" />
+            <path d="M3 3l18 18" />
+        </svg>
+    );
+}
+
+export function UserRemoveIcon({ width = 24, height = 24 }) {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width={width}
+            height={height}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="icon icon-tabler icons-tabler-outline icon-tabler-user-x"
+        >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+            <path d="M6 21v-2a4 4 0 0 1 4 -4h3.5" />
+            <path d="M22 22l-5 -5" />
+            <path d="M17 22l5 -5" />
+        </svg>
+    );
+}
+
+export function UnbanIcon({ width = 24, height = 24 }) {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width={width}
+            height={height}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="icon icon-tabler icons-tabler-outline icon-tabler-user-check"
+        >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+            <path d="M6 21v-2a4 4 0 0 1 4 -4h4" />
+            <path d="M15 19l2 2l4 -4" />
+        </svg>
+    );
+}

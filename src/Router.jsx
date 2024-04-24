@@ -6,6 +6,7 @@ import { Drafts } from './components/Drafts';
 import { PublishedPosts } from './components/PublishedPosts';
 import { AllPosts } from './components/AllPosts';
 import { Comments } from './components/Comments';
+import { Users } from './components/Users';
 
 export function Router() {
     const router = createBrowserRouter([
@@ -32,6 +33,10 @@ export function Router() {
                 {
                     path: '/comments',
                     element: <Comments></Comments>
+                },
+                {
+                    path: '/users',
+                    element: <Users></Users>
                 }
             ]
         },

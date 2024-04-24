@@ -9,7 +9,8 @@ export function UsersGrid({
     hasNextPage,
     loadingNextPage,
     nextPageError,
-    changeUserRole
+    changeUserRole,
+    deleteUser
 }) {
     return (
         <section className="main-section">
@@ -22,6 +23,7 @@ export function UsersGrid({
                             key={user._id}
                             user={user}
                             onChangeRole={changeUserRole}
+                            onDelete={deleteUser}
                         ></UserCard>
                     ))}
             </div>

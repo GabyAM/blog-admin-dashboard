@@ -1,0 +1,28 @@
+.user-card {
+    display: grid;
+    grid-template-columns: 44px 1fr auto;
+    gap: var(--space-200);
+    border: 1px solid var(--main-grey);
+    border-radius: var(--space-300);
+    padding: var(--space-300);
+}
+
+.user-card .image-container,
+.user-card .image-container img {
+    aspect-ratio: 1/1;
+    border-radius: var(--space-200);
+    width: 44px;
+    height: 44px;
+}
+
+.user-card .info-section {
+    overflow: hidden;
+}
+
+.info-section .user-name,
+.info-section .user-email {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+}

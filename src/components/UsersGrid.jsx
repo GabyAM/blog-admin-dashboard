@@ -1,4 +1,5 @@
 import { UserCard } from './UserCard';
+import '../styles/usersgrid.css';
 
 export function UsersGrid({
     title,

@@ -11,7 +11,7 @@ import {
 import { PopupMenu } from './PopupMenu';
 import { useAuth } from '../hooks/useAuth';
 
-export function UserCard({ user, onChangeRole }) {
+export function UserCard({ user, onChangeRole, onDelete }) {
     const { token: currentUser } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     return (
@@ -78,7 +78,10 @@ export function UserCard({ user, onChangeRole }) {
                                         {user.is_banned ? 'Unban' : 'Ban'}
                                     </span>
                                 </button>
-                                <button className="popup-menu-option">
+                                <button
+                                    onClick={() => onDelete(user._id)}
+                                    className="popup-menu-option"
+                                >
                                     <UserRemoveIcon></UserRemoveIcon>
                                     <span>Delete</span>
                                 </button>

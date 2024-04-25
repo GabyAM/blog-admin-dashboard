@@ -180,7 +180,7 @@ export function Users() {
                 changeUserRole={(action, id) =>
                     changeUserRole('user', action, id)
                 }
-                deleteUser={deleteUser}
+                deleteUser={(id) => deleteUser('user', id)}
             ></UsersGrid>
             <UsersGrid
                 title="Admins"
@@ -193,7 +193,7 @@ export function Users() {
                 changeUserRole={(action, id) =>
                     changeUserRole('admin', action, id)
                 }
-                deleteUser={deleteUser}
+                deleteUser={(id) => deleteUser('admin', id)}
             ></UsersGrid>
             <UsersGrid
                 title="Banned users"
@@ -206,7 +206,7 @@ export function Users() {
                 changeUserRole={(action, id) =>
                     changeUserRole('banned', action, id)
                 }
-                deleteUser={deleteUser}
+                deleteUser={(id) => deleteUser('banned', id)}
             ></UsersGrid>
         </>
     );

@@ -23,6 +23,8 @@ export function Comment({ comment, onEdit, onDelete }) {
     const [isEditing, setIsEditing] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+    const isDeleted = comment.user === null;
+
     return (
         <div
             className={`comment-container-wrapper flex-col ${comment.isPending ? 'pending' : ''}`}
@@ -38,50 +40,59 @@ export function Comment({ comment, onEdit, onDelete }) {
                     <div
                         className={
                             'comment' +
-                            (!textHidden || isEditing ? ' expanded' : '')
+                            (!textHidden || isEditing ? ' expanded' : '') +
+                            (isDeleted ? ' deleted' : '')
                         }
                     >
-                        <div className="image-container">
-                            <img src="/avatar.png"></img>
-                        </div>
-                        <div className="comment-text">
-                            <span>{comment.user.name}</span>
-                            {isEditing ? (
-                                <textarea
-                                    className="comment-content"
-                                    defaultValue={commentText}
-                                    rows={3}
-                                    onChange={(e) =>
-                                        setCommentText(e.target.value)
-                                    }
-                                ></textarea>
-                            ) : (
-                                <>
-                                    <p
-                                        ref={text}
-                                        className={`comment-content ${
-                                            isOverflown && textHidden
-                                                ? 'overflown'
-                                                : ''
-                                        }`}
-                                    >
-                                        {commentText}
-                                    </p>
-                                    {isOverflown && (
-                                        <button
-                                            className="toggle-comment-length"
-                                            onClick={() =>
-                                                setTextHidden(!textHidden)
+                        {isDeleted ? (
+                            <span>This comment was removed</span>
+                        ) : (
+                            <>
+                                <div className="image-container">
+                                    <img src="/avatar.png"></img>
+                                </div>
+                                <div className="comment-text">
+                                    <span>{comment.user.name}</span>
+                                    {isEditing ? (
+                                        <textarea
+                                            className="comment-content"
+                                            defaultValue={commentText}
+                                            rows={3}
+                                            onChange={(e) =>
+                                                setCommentText(e.target.value)
                                             }
-                                        >
-                                            {textHidden
-                                                ? 'Show more'
-                                                : 'Show less '}
-                                        </button>
+                                        ></textarea>
+                                    ) : (
+                                        <>
+                                            <p
+                                                ref={text}
+                                                className={`comment-content ${
+                                                    isOverflown && textHidden
+                                                        ? 'overflown'
+                                                        : ''
+                                                }`}
+                                            >
+                                                {commentText}
+                                            </p>
+                                            {isOverflown && (
+                                                <button
+                                                    className="toggle-comment-length"
+                                                    onClick={() =>
+                                                        setTextHidden(
+                                                            !textHidden
+                                                        )
+                                                    }
+                                                >
+                                                    {textHidden
+                                                        ? 'Show more'
+                                                        : 'Show less '}
+                                                </button>
+                                            )}
+                                        </>
                                     )}
-                                </>
-                            )}
-                        </div>
+                                </div>
+                            </>
+                        )}
                         <div className="comment-options-section">
                             <button
                                 onClick={() => setIsMenuOpen(true)}
@@ -93,16 +104,18 @@ export function Comment({ comment, onEdit, onDelete }) {
                                 <PopupMenu
                                     onClickOutside={() => setIsMenuOpen(false)}
                                 >
-                                    <button
-                                        onClick={() => {
-                                            setIsEditing(true);
-                                            setIsMenuOpen(false);
-                                        }}
-                                        className="popup-menu-option"
-                                    >
-                                        <EditIcon></EditIcon>
-                                        <span>Edit</span>
-                                    </button>
+                                    {!isDeleted && (
+                                        <button
+                                            onClick={() => {
+                                                setIsEditing(true);
+                                                setIsMenuOpen(false);
+                                            }}
+                                            className="popup-menu-option"
+                                        >
+                                            <EditIcon></EditIcon>
+                                            <span>Edit</span>
+                                        </button>
+                                    )}
                                     <button
                                         onClick={() => {
                                             onDelete(comment._id);

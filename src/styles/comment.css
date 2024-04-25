@@ -21,6 +21,9 @@
     max-height: var(--space-900);
     gap: var(--space-200);
 }
+.comment.deleted {
+    grid-template-columns: auto 24px;
+}
 .comment.expanded {
     max-height: none;
 }

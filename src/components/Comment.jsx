@@ -3,6 +3,7 @@ import '../styles/comment.css';
 import { useEffect, useRef, useState } from 'react';
 import { DeleteIcon, EditIcon, VerticalDotsIcon } from './Icons';
 import { PopupMenu } from './PopupMenu';
+import { formatDistanceToNow } from 'date-fns';
 
 export function Comment({ comment, onEdit, onDelete }) {
     const text = useRef(null);
@@ -52,7 +53,19 @@ export function Comment({ comment, onEdit, onDelete }) {
                                     <img src="/avatar.png"></img>
                                 </div>
                                 <div className="comment-text">
-                                    <span>{comment.user.name}</span>
+                                    <div className="comment-text-upper-section">
+                                        <span>{comment.user.name}</span>
+                                        {comment.user.is_banned && (
+                                            <span className="banned-label">
+                                                BANNED USER
+                                            </span>
+                                        )}
+                                        <span className="timestamp-label">
+                                            {formatDistanceToNow(
+                                                comment.createdAt
+                                            ) + ' ago'}
+                                        </span>
+                                    </div>
                                     {isEditing ? (
                                         <textarea
                                             className="comment-content"

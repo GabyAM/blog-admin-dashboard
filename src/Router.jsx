@@ -7,6 +7,9 @@ import { PublishedPosts } from './components/PublishedPosts';
 import { AllPosts } from './components/AllPosts';
 import { Comments } from './components/Comments';
 import { Users } from './components/Users';
+import { RegularUsers } from './components/RegularUsers';
+import { Admins } from './components/Admins';
+import { BannedUsers } from './components/BannedUsers';
 
 export function Router() {
     const router = createBrowserRouter([
@@ -37,6 +40,18 @@ export function Router() {
                 {
                     path: '/users',
                     element: <Users></Users>
+                },
+                {
+                    path: '/users/regular',
+                    element: <RegularUsers></RegularUsers>
+                },
+                {
+                    path: '/users/admin',
+                    element: <Admins></Admins>
+                },
+                {
+                    path: '/users/banned',
+                    element: <BannedUsers></BannedUsers>
                 }
             ]
         },

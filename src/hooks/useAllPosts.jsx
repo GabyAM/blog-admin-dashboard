@@ -2,7 +2,7 @@ import toast from 'react-hot-toast';
 import { useAuth } from './useAuth';
 import { usePagination } from './usePagination';
 
-export function usePosts() {
+export function useAllPosts() {
     const { encodedToken } = useAuth();
     const {
         results: unpublishedPosts,
@@ -12,8 +12,9 @@ export function usePosts() {
         fetchNextPage: fetchNextPageUnpublished,
         loadingNextPage: loadingNextPageUnpublished,
         nextPageError: nextPageErrorUnpublished,
-        hasNextPage: hasNextPageUnpublished
-    } = usePagination('http://localhost:3000/posts?is_published=false', 4);
+        hasNextPage: hasNextPageUnpublished,
+        refetch: refetchUnpublished
+    } = usePagination(`http://localhost:3000/posts?is_published=false`, 4);
 
     const {
         results: publishedPosts,
@@ -23,24 +24,40 @@ export function usePosts() {
         fetchNextPage: fetchNextPagePublished,
         loadingNextPage: loadingNextPagePublished,
         nextPageError: nextPageErrorPublished,
-        hasNextPage: hasNextPagePublished
-    } = usePagination('http://localhost:3000/posts?is_published=true', 4);
+        hasNextPage: hasNextPagePublished,
+        refetch: refetchPublished
+    } = usePagination(`http://localhost:3000/posts?is_published=true`, 4);
+
+    function updatePost(index, setPosts, update) {
+        setPosts((prevPosts) => {
+            const posts = [...prevPosts];
+            posts[index] = { ...posts[index], ...update };
+            return posts;
+        });
+    }
+
+    function deletePost(index, setPosts) {
+        setPosts((prevPosts) => {
+            const newPosts = [...prevPosts];
+            newPosts.splice(index, 1);
+            return newPosts;
+        });
+    }
+
+    function addPost(setPosts, post) {
+        setPosts((prevPosts) => [post, ...prevPosts]);
+    }
 
     function handleUpdatePostStatus(published, id) {
         const posts = published ? publishedPosts : unpublishedPosts;
-
         const setPosts = published ? setPublishedPosts : setUnpublishedPosts;
         const setOtherPosts = published
             ? setUnpublishedPosts
             : setPublishedPosts;
-
         const postIndex = posts.findIndex((post) => post._id === id);
-        const post = posts[postIndex];
-        setPosts((prevPosts) => {
-            const posts = [...prevPosts];
-            posts[postIndex] = { ...posts[postIndex], isPending: true };
-            return posts;
-        });
+
+        updatePost(postIndex, setPosts, { isPending: true });
+
         const promise = fetch(
             `http://localhost:3000/post/${id}/${published ? 'unpublish' : 'publish'}`,
             {
@@ -65,24 +82,14 @@ export function usePosts() {
                         "The post doesn't meet the requirements to be published"
                     );
                 }
-                setPosts((prevPosts) => {
-                    const newPosts = [...prevPosts];
-                    newPosts.splice(postIndex, 1);
-                    return newPosts;
+                addPost(setOtherPosts, {
+                    ...posts[postIndex],
+                    isPending: false
                 });
-
-                setOtherPosts((prevPosts) => {
-                    const newPosts = [...prevPosts];
-                    post.is_published = !published;
-                    return [post, ...newPosts];
-                });
+                deletePost(postIndex, setPosts);
             })
             .catch((e) => {
-                setPosts((prevPosts) => {
-                    const newPosts = [...prevPosts];
-                    newPosts[postIndex] = post;
-                    return newPosts;
-                });
+                updatePost(postIndex, setPosts, { isPending: false });
                 throw new Error(e.message);
             });
 
@@ -98,11 +105,8 @@ export function usePosts() {
             ? publishedPosts.findIndex((post) => post._id === id)
             : unpublishedPosts.findIndex((post) => post._id === id);
         const setPosts = published ? setPublishedPosts : setUnpublishedPosts;
-        setPosts((prevPosts) => {
-            const newPosts = [...prevPosts];
-            newPosts[postIndex] = { ...newPosts[postIndex], isPending: true };
-            return newPosts;
-        });
+        updatePost(postIndex, setPosts, { isPending: true });
+
         const promise = fetch(`http://localhost:3000/post/${id}/delete`, {
             method: 'POST',
             credentials: 'include',
@@ -112,18 +116,10 @@ export function usePosts() {
             }
         })
             .then(() => {
-                setPosts((prevPosts) => {
-                    const newPosts = [...prevPosts];
-                    newPosts.splice(postIndex, 1);
-                    return newPosts;
-                });
+                deletePost(postIndex, setPosts);
             })
             .catch((e) => {
-                setPosts((prevPosts) => {
-                    const newPosts = [...prevPosts];
-                    newPosts[postIndex].isPending = false;
-                    return newPosts;
-                });
+                updatePost(postIndex, setPosts, { isPending: false });
                 throw new Error("Couldn't delete the post");
             });
 
@@ -133,6 +129,7 @@ export function usePosts() {
             error: (error) => `${error.message}`
         });
     }
+
     return {
         unpublishedPosts,
         loadingUnpublishedPosts,

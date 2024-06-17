@@ -1,33 +1,30 @@
-import toast from 'react-hot-toast';
-import { useAuth } from '../hooks/useAuth';
-import { usePagination } from '../hooks/usePagination';
 import { Posts } from './Posts';
-import { usePosts } from '../hooks/usePosts';
+import { usePostsList } from '../hooks/usePostsList';
 
 export function Drafts() {
     const {
-        unpublishedPosts,
-        loadingUnpublishedPosts,
-        errorUnpublishedPosts,
-        fetchNextPageUnpublished,
-        loadingNextPageUnpublished,
-        nextPageErrorUnpublished,
-        hasNextPageUnpublished,
+        posts,
+        loading,
+        error,
+        fetchNextPage,
+        loadingNextPage,
+        nextPageError,
+        hasNextPage,
         handleUpdatePostStatus,
         handleDeletePost
-    } = usePosts();
+    } = usePostsList({ published: false });
 
     return (
         <Posts
             title={'Drafts'}
-            posts={unpublishedPosts}
-            loading={loadingUnpublishedPosts}
-            error={errorUnpublishedPosts}
-            fetchNextPage={fetchNextPageUnpublished}
-            loadingNextPage={loadingNextPageUnpublished}
-            hasNextPage={hasNextPageUnpublished}
-            updatePostStatus={(id) => handleUpdatePostStatus(false, id)}
-            deletePost={(id) => handleDeletePost(false, id)}
+            posts={posts}
+            loading={loading}
+            error={error}
+            fetchNextPage={fetchNextPage}
+            loadingNextPage={loadingNextPage}
+            hasNextPage={hasNextPage}
+            updatePostStatus={(id) => handleUpdatePostStatus(id)}
+            deletePost={(id) => handleDeletePost(id)}
         ></Posts>
     );
 }

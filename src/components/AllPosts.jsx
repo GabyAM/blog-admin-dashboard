@@ -1,8 +1,5 @@
-import { usePagination } from '../hooks/usePagination';
-import { toast } from 'react-hot-toast';
 import { Posts } from './Posts';
-import { useAuth } from '../hooks/useAuth';
-import { usePosts } from '../hooks/usePosts';
+import { useAllPosts } from '../hooks/useAllPosts';
 
 export function AllPosts() {
     const {
@@ -24,10 +21,11 @@ export function AllPosts() {
 
         handleUpdatePostStatus,
         handleDeletePost
-    } = usePosts();
+    } = useAllPosts();
+
     return (
         <>
-            {unpublishedPosts && (
+            {unpublishedPosts.length > 0 && (
                 <Posts
                     title={'Drafts'}
                     posts={unpublishedPosts}
@@ -40,7 +38,7 @@ export function AllPosts() {
                     deletePost={(id) => handleDeletePost(false, id)}
                 ></Posts>
             )}
-            {publishedPosts && (
+            {publishedPosts.length > 0 && (
                 <Posts
                     title={'Published posts'}
                     posts={publishedPosts}

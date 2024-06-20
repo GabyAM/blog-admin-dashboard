@@ -1,102 +1,120 @@
 import toast from 'react-hot-toast';
 import { useAuth } from './useAuth';
-import { usePagination } from './usePagination';
+import {
+    useInfiniteQuery,
+    useMutation,
+    useQueryClient
+} from '@tanstack/react-query';
+import {
+    fetchPublishedPosts,
+    fetchUnpublishedPosts,
+    submitDeletePost,
+    submitPublishPost,
+    submitUnpublishPost
+} from '../api/post';
 
-export function usePostsList({ published = true }) {
+export function usePostsList({ published }) {
     const { encodedToken } = useAuth();
+
+    const fetchFn = published ? fetchPublishedPosts : fetchUnpublishedPosts;
+    const currentKey = published ? 'published_posts' : 'unpublished_posts';
+    const otherKey = published ? 'unpublished_posts' : 'published_posts';
     const {
-        results: posts,
-        setResults: setPosts,
-        loading,
+        data: posts,
+        isLoading,
         error,
         fetchNextPage,
-        loadingNextPage,
-        nextPageError,
-        hasNextPage,
-        refetch
-    } = usePagination(
-        `http://localhost:3000/posts?is_published=${published}`,
-        4
-    );
+        isFetchingNextPage,
+        isFetchNextPageError,
+        hasNextPage
+    } = useInfiniteQuery({
+        queryKey: [currentKey],
+        queryFn: ({ pageParam }) => fetchFn(4, pageParam, encodedToken),
+        initialPageParam: null,
+        getNextPageParam: (lastPage) => lastPage.metadata.nextPageParams
+    });
 
-    function updatePost(index, update) {
-        setPosts((prevPosts) => {
-            const posts = [...prevPosts];
-            posts[index] = { ...posts[index], ...update };
-            return posts;
-        });
+    const queryClient = useQueryClient();
+    function updatePost(id, update) {
+        queryClient.setQueryData([currentKey], (prevData) => ({
+            ...prevData,
+            pages: prevData.pages.map((page) => ({
+                ...page,
+                results: page.results.map((post) =>
+                    post._id === id ? { ...post, ...update } : post
+                )
+            }))
+        }));
     }
 
-    function deletePost(index) {
-        setPosts((prevPosts) => {
-            const newPosts = [...prevPosts];
-            newPosts.splice(index, 1);
-            return newPosts;
-        });
+    function deletePost(id) {
+        queryClient.setQueryData([currentKey], (prevData) => ({
+            ...prevData,
+            pages: prevData.pages.map((page) => ({
+                ...page,
+                results: page.results.filter((post) => post._id !== id)
+            }))
+        }));
     }
+
+    const updatePostStatus = published
+        ? submitUnpublishPost
+        : submitPublishPost;
+
+    const updateStatusMutation = useMutation({
+        mutationKey: ['update_post_status'],
+        onMutate: (id) => updatePost(id, { isPending: true }),
+        mutationFn: (id) => updatePostStatus(id, encodedToken),
+        onSuccess: (data, id) => {
+            if (data.error) {
+                throw new Error(
+                    "The post doesn't meet the requirements to be published"
+                );
+            }
+            deletePost(id);
+            if (queryClient.getQueryData([otherKey])) {
+                queryClient.setQueryData([otherKey], (prevData) => {
+                    if (!prevData) return prevData;
+                    return {
+                        ...prevData,
+                        pages: prevData.pages.map((page, index) => {
+                            if (index === 0) {
+                                return {
+                                    ...page,
+                                    results: [data.post, ...page.results]
+                                };
+                            }
+                            return page;
+                        })
+                    };
+                });
+            }
+            console.log(queryClient.getQueryData([otherKey]));
+        },
+        onError: (e, id) => {
+            updatePost(id, { isPending: false });
+        }
+    });
 
     function handleUpdatePostStatus(id) {
-        const postIndex = posts.findIndex((post) => post._id === id);
-        updatePost(postIndex, { isPending: true });
-
-        const promise = fetch(
-            `http://localhost:3000/post/${id}/${published ? 'unpublish' : 'publish'}`,
-            {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    Authorization: `bearer ${encodedToken}`
-                }
-            }
-        )
-            .then((res) => {
-                if (!res.ok && res.status !== 400) {
-                    throw new Error(
-                        `couldn't ${published ? 'unpublish' : 'publish'} the post`
-                    );
-                }
-                return res.json();
-            })
-            .then((data) => {
-                if (data.errors) {
-                    throw new Error(
-                        "The post doesn't meet the requirements to be published"
-                    );
-                }
-                deletePost(postIndex);
-            })
-            .catch((e) => {
-                updatePost(postIndex, { isPending: false });
-                throw new Error(e.message);
-            });
-
-        toast.promise(promise, {
+        toast.promise(updateStatusMutation.mutateAsync(id), {
             loading: published ? 'Unpublishing post...' : 'Publishing post...',
             success: `Post ${published ? 'unpublished' : 'published'} successfully`,
             error: (error) => `${error.message}`
         });
     }
 
-    function handleDeletePost(id) {
-        const postIndex = posts.findIndex((post) => post._id === id);
-        updatePost(postIndex, { isPending: true });
-        const promise = fetch(`http://localhost:3000/post/${id}/delete`, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                Authorization: `bearer ${encodedToken}`,
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(() => {
-                deletePost(postIndex);
-            })
-            .catch((e) => {
-                updatePost(postIndex, { isPending: false });
-                throw new Error("Couldn't delete the post");
-            });
+    const deleteMutation = useMutation({
+        mutationKey: ['delete_post'],
+        onMutate: (id) => updatePost(id, { isPending: true }),
+        mutationFn: (id) => submitDeletePost(id),
+        onSuccess: (data, variables) => deletePost(variables.id),
+        onError: (e, variables) =>
+            updatePost(variables.id, { isPending: false })
+    });
 
-        toast.promise(promise, {
+    function handleDeletePost(id) {
+        toast.promise(deleteMutation.mutateAsync(id), {
             loading: 'Deleting post...',
             success: 'Post deleted!',
             error: (error) => `${error.message}`
@@ -105,14 +123,12 @@ export function usePostsList({ published = true }) {
 
     return {
         posts,
-        setPosts,
-        loading,
+        isLoading,
         error,
         fetchNextPage,
-        loadingNextPage,
-        nextPageError,
+        isFetchingNextPage,
+        isFetchNextPageError,
         hasNextPage,
-        refetch,
         handleUpdatePostStatus,
         handleDeletePost
     };

@@ -106,42 +106,46 @@ export function Comment({ comment, onEdit, onDelete }) {
                                 </div>
                             </>
                         )}
-                        <div className="comment-options-section">
-                            <button
-                                onClick={() => setIsMenuOpen(true)}
-                                className="icon-container more-button"
-                            >
-                                <VerticalDotsIcon></VerticalDotsIcon>
-                            </button>
-                            {isMenuOpen && (
-                                <PopupMenu
-                                    onClickOutside={() => setIsMenuOpen(false)}
+                        {!isDeleted && (
+                            <div className="comment-options-section">
+                                <button
+                                    onClick={() => setIsMenuOpen(true)}
+                                    className="icon-container more-button"
                                 >
-                                    {!isDeleted && (
+                                    <VerticalDotsIcon></VerticalDotsIcon>
+                                </button>
+                                {isMenuOpen && (
+                                    <PopupMenu
+                                        onClickOutside={() =>
+                                            setIsMenuOpen(false)
+                                        }
+                                    >
+                                        {!isDeleted && (
+                                            <button
+                                                onClick={() => {
+                                                    setIsEditing(true);
+                                                    setIsMenuOpen(false);
+                                                }}
+                                                className="popup-menu-option"
+                                            >
+                                                <EditIcon></EditIcon>
+                                                <span>Edit</span>
+                                            </button>
+                                        )}
                                         <button
                                             onClick={() => {
-                                                setIsEditing(true);
+                                                onDelete(comment._id);
                                                 setIsMenuOpen(false);
                                             }}
                                             className="popup-menu-option"
                                         >
-                                            <EditIcon></EditIcon>
-                                            <span>Edit</span>
+                                            <DeleteIcon></DeleteIcon>
+                                            <span>Delete</span>
                                         </button>
-                                    )}
-                                    <button
-                                        onClick={() => {
-                                            onDelete(comment._id);
-                                            setIsMenuOpen(false);
-                                        }}
-                                        className="popup-menu-option"
-                                    >
-                                        <DeleteIcon></DeleteIcon>
-                                        <span>Delete</span>
-                                    </button>
-                                </PopupMenu>
-                            )}
-                        </div>
+                                    </PopupMenu>
+                                )}
+                            </div>
+                        )}
                     </div>
                     {isEditing && (
                         <div
@@ -156,7 +160,11 @@ export function Comment({ comment, onEdit, onDelete }) {
                                 </button>
                                 <button
                                     onClick={() => {
-                                        onEdit(comment._id, commentText);
+                                        onEdit(
+                                            comment._id,
+                                            comment.text,
+                                            commentText
+                                        );
                                         setIsEditing(false);
                                     }}
                                     className="action-button primary-button"

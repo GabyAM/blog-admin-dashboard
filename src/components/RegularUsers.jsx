@@ -1,31 +1,28 @@
 import { UsersGrid } from './UsersGrid';
-import { useUsers } from '../hooks/useUsers';
+import { useUsersList } from '../hooks/useUsersList';
 
 export function RegularUsers() {
     const {
         users,
-        loadingUsers,
-        usersError,
-        fetchNextPageUsers,
-        loadingNextPageUsers,
-        nextPageErrorUsers,
-        hasNextPageUsers,
+        isLoading,
+        error,
+        isFetchingNextPage,
+        fetchNextPage,
+        isFetchNextPageError,
         handleChangeUserRole,
         handleDeleteUser
-    } = useUsers();
+    } = useUsersList('regular_users');
     return (
         <UsersGrid
             title="Users"
             users={users}
-            loading={loadingUsers}
-            error={usersError}
-            fetchNextPage={fetchNextPageUsers}
-            loadingNextPage={loadingNextPageUsers}
-            nextPageError={nextPageErrorUsers}
-            changeUserRole={(action, id) =>
-                handleChangeUserRole('user', action, id)
-            }
-            deleteUser={(id) => handleDeleteUser('user', id)}
+            loading={isLoading}
+            error={error}
+            fetchNextPage={fetchNextPage}
+            loadingNextPage={isFetchingNextPage}
+            nextPageError={isFetchNextPageError}
+            changeUserRole={handleChangeUserRole}
+            deleteUser={handleDeleteUser}
         ></UsersGrid>
     );
 }

@@ -25,14 +25,16 @@ export function Posts({
                     </>
                 ) : (
                     !error &&
-                    posts.map((post) => (
-                        <PostCard
-                            key={post._id}
-                            post={post}
-                            onToggleState={updatePostStatus}
-                            onDelete={deletePost}
-                        ></PostCard>
-                    ))
+                    posts.pages.map((page) =>
+                        page.results.map((post) => (
+                            <PostCard
+                                key={post._id}
+                                post={post}
+                                onToggleState={updatePostStatus}
+                                onDelete={deletePost}
+                            ></PostCard>
+                        ))
+                    )
                 )}
                 {loadingNextPage && (
                     <>

@@ -4,24 +4,24 @@ import { usePostsList } from '../hooks/usePostsList';
 export function PublishedPosts() {
     const {
         posts,
-        loading,
+        isLoading,
         error,
         fetchNextPage,
-        loadingNextPage,
-        nextPageError,
+        isFetchingNextPage,
+        isFetchNextPageError,
         hasNextPage,
         handleUpdatePostStatus,
         handleDeletePost
-    } = usePostsList({ published: false });
+    } = usePostsList({ published: true });
 
     return (
         <Posts
             title={'Published posts'}
             posts={posts}
-            loading={loading}
+            loading={isLoading}
             error={error}
             fetchNextPage={fetchNextPage}
-            loadingNextPage={loadingNextPage}
+            loadingNextPage={isFetchNextPageError}
             hasNextPage={hasNextPage}
             updatePostStatus={(id) => handleUpdatePostStatus(id)}
             deletePost={(id) => handleDeletePost(id)}

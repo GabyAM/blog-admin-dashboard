@@ -4,11 +4,11 @@ import { usePostsList } from '../hooks/usePostsList';
 export function Drafts() {
     const {
         posts,
-        loading,
+        isLoading,
         error,
         fetchNextPage,
-        loadingNextPage,
-        nextPageError,
+        isFetchingNextPage,
+        isFetchNextPageError,
         hasNextPage,
         handleUpdatePostStatus,
         handleDeletePost
@@ -18,10 +18,10 @@ export function Drafts() {
         <Posts
             title={'Drafts'}
             posts={posts}
-            loading={loading}
+            loading={isLoading}
             error={error}
             fetchNextPage={fetchNextPage}
-            loadingNextPage={loadingNextPage}
+            loadingNextPage={isFetchNextPageError}
             hasNextPage={hasNextPage}
             updatePostStatus={(id) => handleUpdatePostStatus(id)}
             deletePost={(id) => handleDeletePost(id)}

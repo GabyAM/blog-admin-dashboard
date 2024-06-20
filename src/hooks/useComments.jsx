@@ -1,96 +1,86 @@
 import toast from 'react-hot-toast';
 import { useAuth } from './useAuth';
-import { usePagination } from './usePagination';
+import {
+    useInfiniteQuery,
+    useMutation,
+    useQueryClient
+} from '@tanstack/react-query';
+import {
+    fetchComments,
+    submitDeleteComment,
+    submitEditComment
+} from '../api/comment';
 
-export function useComments() {
+export function useComments(search) {
     const { encodedToken } = useAuth();
     const {
-        results: comments,
-        setResults: setComments,
-        loading,
+        data: comments,
+        isLoading,
         error,
         fetchNextPage,
-        loadingNextPage,
-        nextPageError,
+        isFetchingNextPage,
+        isFetchNextPageError,
         hasNextPage
-    } = usePagination('http://localhost:3000/comments', 4);
+    } = useInfiniteQuery({
+        queryKey: ['comments'],
+        queryFn: ({ pageParam }) => fetchComments(pageParam, 4),
+        initialPageParam: null,
+        getNextPageParam: (lastPage) => lastPage.metadata.nextPageParams
+    });
 
-    function updateComment(index, updates) {
-        setComments((prevComments) => {
-            const newComments = [...prevComments];
-            newComments[index] = {
-                ...newComments[index],
-                ...updates
-            };
-            return newComments;
-        });
+    const queryClient = useQueryClient();
+    function updateComment(id, update) {
+        queryClient.setQueryData(['comments'], (prevData) => ({
+            ...prevData,
+            pages: prevData.pages.map((page) => ({
+                ...page,
+                results: page.results.map((comment) =>
+                    comment._id === id ? { ...comment, ...update } : comment
+                )
+            }))
+        }));
     }
 
-    function handleCommentEdit(id, text) {
-        const commentIndex = comments.findIndex(
-            (comment) => comment._id === id
-        );
-        const prevText = comments[commentIndex].text;
-        updateComment(commentIndex, { text, isPending: true });
-
-        const promise = fetch(`http://localhost:3000/comment/${id}/update`, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `bearer ${encodedToken}`
-            },
-            body: JSON.stringify({ text })
-        })
-            .then(() => updateComment(commentIndex, { isPending: false }))
-            .catch((e) => {
-                updateComment(commentIndex, {
-                    isPending: false,
-                    text: prevText
-                });
-                throw new Error(e.message);
+    const editMutation = useMutation({
+        mutationKey: ['edit_comment'],
+        onMutate: ({ id, text }) =>
+            updateComment(id, { text, isPending: true }),
+        mutationFn: ({ id, text }) => submitEditComment(id, text, encodedToken),
+        onSuccess: (data, variables) =>
+            updateComment(variables.id, { isPending: false }),
+        onError: (e, variables) => {
+            const { id, prevText } = variables;
+            updateComment(id, {
+                isPending: false,
+                text: prevText
             });
+        }
+    });
 
-        toast.promise(promise, {
+    function handleCommentEdit(id, prevText, text) {
+        toast.promise(editMutation.mutateAsync({ id, prevText, text }), {
             loading: 'Updating comment...',
             success: 'Comment updated!',
             error: "Couldn't update comment"
         });
     }
 
+    const deleteMutation = useMutation({
+        mutationKey: ['delete_comment'],
+        onMutate: (id) => updateComment(id, { isPending: true }),
+        mutationFn: (id) => {
+            console.log('minga');
+            return submitDeleteComment(id, encodedToken);
+        },
+        onSuccess: (data, id) => {
+            updateComment(id, { user: null, text: '', isPending: false });
+        },
+        onError: (e, id) => {
+            updateComment(id, { isPending: false });
+        }
+    });
     function handleCommentDelete(id) {
-        const commentIndex = comments.findIndex(
-            (comment) => comment._id === id
-        );
-        const prevComment = comments[commentIndex];
-
-        updateComment(commentIndex, { isPending: true });
-
-        const promise = fetch(`http://localhost:3000/comment/${id}/delete`, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `bearer ${encodedToken}`
-            }
-        })
-            .then(() =>
-                setComments((prevComments) => {
-                    const newComments = [...prevComments];
-                    newComments.splice(commentIndex, 1);
-                    return newComments;
-                })
-            )
-            .catch((e) => {
-                setComments((prevComments) => {
-                    const newComments = [...prevComments];
-                    newComments[commentIndex].isPending = false;
-                    return newComments;
-                });
-                throw new Error(e.message);
-            });
-
-        toast.promise(promise, {
+        toast.promise(deleteMutation.mutateAsync(id), {
             loading: 'Deleting comment...',
             success: 'Comment deleted!',
             error: "Couldn't delete comment"
@@ -99,11 +89,11 @@ export function useComments() {
 
     return {
         comments,
-        loading,
+        isLoading,
         error,
         fetchNextPage,
-        loadingNextPage,
-        nextPageError,
+        isFetchingNextPage,
+        isFetchNextPageError,
         hasNextPage,
         handleCommentEdit,
         handleCommentDelete

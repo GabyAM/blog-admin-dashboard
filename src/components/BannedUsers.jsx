@@ -1,32 +1,28 @@
+import { useUsersList } from '../hooks/useUsersList';
 import { UsersGrid } from './UsersGrid';
-import { useUsers } from '../hooks/useUsers';
 
 export function BannedUsers() {
     const {
-        banneds,
-        loadingBanneds,
-        bannedsError,
-        fetchNextPageBanneds,
-        loadingNextPageBanneds,
-        nextPageErrorBanneds,
-        hasNextPageBanneds,
-
+        users,
+        isLoading,
+        error,
+        isFetchingNextPage,
+        fetchNextPage,
+        isFetchNextPageError,
         handleChangeUserRole,
         handleDeleteUser
-    } = useUsers();
+    } = useUsersList('banned_users');
     return (
         <UsersGrid
             title="Banned users"
-            users={banneds}
-            loading={loadingBanneds}
-            error={bannedsError}
-            fetchNextPage={fetchNextPageBanneds}
-            loadingNextPage={loadingNextPageBanneds}
-            nextPageError={nextPageErrorBanneds}
-            changeUserRole={(action, id) =>
-                handleChangeUserRole('banned', action, id)
-            }
-            deleteUser={(id) => handleDeleteUser('banned', id)}
+            users={users}
+            loading={isLoading}
+            error={error}
+            fetchNextPage={fetchNextPage}
+            loadingNextPage={isFetchingNextPage}
+            nextPageError={isFetchNextPageError}
+            changeUserRole={handleChangeUserRole}
+            deleteUser={handleDeleteUser}
         ></UsersGrid>
     );
 }

@@ -1,19 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { ImageInput } from './ImageInput';
-import { useFetchData } from '../hooks/UseFetchData';
 import { useParams } from 'react-router-dom';
 import '../styles/editpost.css';
 import { useAuth } from '../hooks/useAuth';
+import { submitImageUpload } from '../api/image';
+import { fetchPost, submitEditPost } from '../api/post';
+import { useQuery } from '@tanstack/react-query';
 export function EditPost() {
     const { id } = useParams();
+
+    const { encodedToken } = useAuth();
     const {
         data: post,
-        loading,
+        isLoading,
         error
-    } = useFetchData(`http://localhost:3000/post/${id}`);
-
-    const { encodedToken: token } = useAuth();
+    } = useQuery({
+        queryKey: [`post_${id}`],
+        queryFn: () => fetchPost(id, encodedToken)
+    });
 
     const editorRef = useRef(null);
 
@@ -50,30 +55,15 @@ export function EditPost() {
     }
 
     function handleImageUpload(blobInfo) {
-        return new Promise((resolve, reject) => {
-            const formData = new FormData();
-            formData.append('image', blobInfo.blob(), blobInfo.filename());
-            fetch(`http://localhost:3000/image/upload`, {
-                method: 'POST',
-                credentials: 'include',
-                body: formData,
-                headers: {
-                    Authorization: `bearer ${token}`
-                }
+        const formData = new FormData();
+        formData.append('image', blobInfo.blob(), blobInfo.filename());
+        return submitImageUpload(formData, encodedToken)
+            .then((data) => {
+                return `http://localhost:3000${data.url}`;
             })
-                .then((res) => {
-                    if (!res.ok) {
-                        throw new Error('Error at image upload');
-                    }
-                    return res.json();
-                })
-                .then((data) => {
-                    resolve(`http://localhost:3000${data.url}`);
-                })
-                .catch((e) => {
-                    reject(e);
-                });
-        });
+            .catch((e) => {
+                throw new Error('Error uploading image');
+            });
     }
 
     function onInputChange(name, value) {
@@ -92,26 +82,14 @@ export function EditPost() {
             // only true when the image hasn't been changed
             formData.append('image', inputs.postThumbnail.file);
         }
-        try {
-            const res = await fetch(`http://localhost:3000/post/${id}/update`, {
-                method: 'POST',
-                credentials: 'include',
-                body: formData,
-                headers: {
-                    Authorization: `bearer ${token}`
-                }
-            });
-            if (!res.ok) {
-                throw new Error('error on post update');
-            }
-        } catch (e) {
-            console.error(e);
-        }
+        submitEditPost(id, formData, encodedToken).catch((e) => {
+            console.log(e);
+        });
     }
 
     return (
         <>
-            {loading ? (
+            {isLoading ? (
                 <p>loading...</p>
             ) : error ? (
                 <p>There was an error loading the post</p>

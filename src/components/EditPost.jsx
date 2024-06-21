@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { ImageInput } from './ImageInput';
 import { useParams } from 'react-router-dom';
 import '../styles/editpost.css';
@@ -7,6 +6,20 @@ import { useAuth } from '../hooks/useAuth';
 import { submitImageUpload } from '../api/image';
 import { fetchPost, submitEditPost } from '../api/post';
 import { useQuery } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
+import { useSmartTextarea } from '../hooks/useSmartTextarea';
+import { EditorComponent } from './EditorComponent';
+
+const formDefaultValues = {
+    title: '',
+    summary: '',
+    image: {
+        url: '',
+        file: null
+    },
+    text: ''
+};
+
 export function EditPost() {
     const { id } = useParams();
 
@@ -20,184 +33,97 @@ export function EditPost() {
         queryFn: () => fetchPost(id, encodedToken)
     });
 
-    const editorRef = useRef(null);
-
-    const [inputs, setInputs] = useState({
-        postTitle: '',
-        postDescription: '',
-        postThumbnail: {
-            url: '',
-            file: null
-        },
-        postContent: ''
-    });
-
-    useEffect(() => {
-        if (post) {
-            setInputs({
-                postTitle: post.title,
-                postDescription: post.summary,
-                postThumbnail: {
-                    url: `http://localhost:3000${post.image}`,
-                    file: null
-                },
-                postContent: post.text
-            });
-        }
-    }, [post]);
-
-    function handleTextareaInput(e) {
-        const textarea = e.target;
-
-        const zoom = window.innerWidth / window.outerWidth;
-        textarea.style.height = 'auto';
-        textarea.style.height = textarea.scrollHeight + 'px';
-    }
-
-    function handleImageUpload(blobInfo) {
-        const formData = new FormData();
-        formData.append('image', blobInfo.blob(), blobInfo.filename());
-        return submitImageUpload(formData, encodedToken)
-            .then((data) => {
-                return `http://localhost:3000${data.url}`;
-            })
-            .catch((e) => {
-                throw new Error('Error uploading image');
-            });
-    }
-
-    function onInputChange(name, value) {
-        setInputs({
-            ...inputs,
-            [name]: value
+    function handlePostSave(formData) {
+        if (isSubmitting || disabled) return;
+        const dirtyKeys = Object.keys(dirtyFields);
+        if (dirtyKeys.length === 0) return;
+        const newFormData = new FormData();
+        dirtyKeys.forEach((key) => {
+            const value = key === 'image' ? formData[key].file : formData[key];
+            newFormData.append(key, value);
         });
-    }
 
-    async function handlePostSave() {
-        const formData = new FormData();
-        formData.append('title', inputs.postTitle);
-        formData.append('summary', inputs.postDescription);
-        formData.append('text', editorRef.current.getContent());
-        if (inputs.postThumbnail.file) {
-            // only true when the image hasn't been changed
-            formData.append('image', inputs.postThumbnail.file);
-        }
-        submitEditPost(id, formData, encodedToken).catch((e) => {
+        return submitEditPost(id, newFormData, encodedToken).catch((e) => {
             console.log(e);
         });
     }
 
+    const {
+        register,
+        reset,
+        control,
+        formState: { isSubmitting, disabled, dirtyFields },
+        handleSubmit,
+        setValue,
+        getValues
+    } = useForm({
+        defaultValues: formDefaultValues
+    });
+
+    useEffect(() => {
+        if (post) {
+            reset({
+                title: post.title,
+                summary: post.summary,
+                image: {
+                    url: `http://localhost:3000${post.image}`,
+                    file: null
+                },
+                text: post.text
+            });
+        }
+    }, [post, reset]);
+
+    const textareaRef = useRef(null);
+    const { registerTextarea } = useSmartTextarea(
+        textareaRef,
+        getValues().summary,
+        setValue,
+        register
+    );
+
+    if (isLoading) return <p>loading...</p>;
+    if (error) return <p>There was an error loading the post</p>;
     return (
         <>
-            {isLoading ? (
-                <p>loading...</p>
-            ) : error ? (
-                <p>There was an error loading the post</p>
-            ) : (
-                <>
-                    <section>
-                        <div className="flex-col post-headings">
-                            <input
-                                className="post-title-input"
-                                type="text"
-                                defaultValue={post.title}
-                                placeholder="Post title"
-                                onChange={(e) => {
-                                    onInputChange('postTitle', e.target.value);
-                                }}
-                            ></input>
-                            <textarea
-                                rows={1}
-                                onChange={(e) => {
-                                    handleTextareaInput(e);
-                                    onInputChange(
-                                        'postDescription',
-                                        e.target.value
-                                    );
-                                }}
-                                className="post-description-input"
-                                value={post.description}
-                                placeholder="Description of the post"
-                            ></textarea>
-                        </div>
-                    </section>
-                    <section>
-                        <h2 className="section-title">Thumbnail</h2>
-                        <ImageInput
-                            initialValue={inputs.postThumbnail.url}
-                            onChange={(value) => {
-                                onInputChange('postThumbnail', {
-                                    url: URL.createObjectURL(value),
-                                    file: value
-                                });
-                            }}
-                        ></ImageInput>
-                    </section>
-                    <section>
-                        <h2 className="section-title">Post content</h2>
-                        <Editor
-                            apiKey={process.env.TINYMCE_EDITOR_API_KEY}
-                            onInit={(evt, editor) =>
-                                (editorRef.current = editor)
-                            }
-                            onEditorChange={(value) => {
-                                onInputChange('postContent', value);
-                            }}
-                            initialValue={post.text}
-                            init={{
-                                height: 500,
-                                menubar:
-                                    'file edit insert view format table tools help',
-                                plugins: [
-                                    'advlist',
-                                    'autolink',
-                                    'lists',
-                                    'link',
-                                    'image',
-                                    'charmap',
-                                    'preview',
-                                    'anchor',
-                                    'searchreplace',
-                                    'visualblocks',
-                                    'code',
-                                    'fullscreen',
-                                    'insertdatetime',
-                                    'media',
-                                    'table',
-                                    'code',
-                                    'help',
-                                    'wordcount'
-                                ],
-                                toolbar:
-                                    'undo redo | blocks | ' +
-                                    'bold italic forecolor | alignleft aligncenter ' +
-                                    'alignright alignjustify | bullist numlist outdent indent | ' +
-                                    'removeformat | help' +
-                                    'image' +
-                                    'fontselect',
-                                font_family_formats:
-                                    'Poppins; Playfair Display',
-                                content_style: `
-                                    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap');
-                                    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap')
-                                    body { font-family: Poppins; font-size:14px; }`,
-                                images_upload_handler: handleImageUpload
-                            }}
-                        />
-                    </section>
-                    <section>
-                        <h2 className="section-title">Actions</h2>
-                        <button>Publish post</button>
-                        <button>Delete post</button>
-                    </section>
-                    <button
-                        className="save-post-button"
-                        onClick={handlePostSave}
-                    >
-                        Save
-                    </button>
-                </>
-            )}
+            <form
+                className="post-form flex-col"
+                onSubmit={handleSubmit(handlePostSave)}
+            >
+                <section>
+                    <div className="flex-col post-headings">
+                        <input
+                            className="post-title-input"
+                            type="text"
+                            defaultValue={post.title}
+                            placeholder="Post title"
+                            {...register('title')}
+                        ></input>
+                        <textarea
+                            rows={1}
+                            className="post-description-input"
+                            value={post.description}
+                            placeholder="Description of the post"
+                            {...registerTextarea}
+                            ref={textareaRef}
+                        ></textarea>
+                    </div>
+                </section>
+                <section>
+                    <h2 className="section-title">Thumbnail</h2>
+                    <ImageInput control={control}></ImageInput>
+                </section>
+                <section>
+                    <h2 className="section-title">Post content</h2>
+                    <EditorComponent control={control}></EditorComponent>
+                </section>
+                <button className="save-post-button">Save</button>
+            </form>
+            <section>
+                <h2 className="section-title">Actions</h2>
+                <button>Publish post</button>
+                <button>Delete post</button>
+            </section>
         </>
     );
 }

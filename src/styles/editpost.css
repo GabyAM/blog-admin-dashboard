@@ -1,3 +1,7 @@
+.post-form {
+    gap: var(--space-600);
+}
+
 .post-headings {
     gap: var(--space-100);
     max-width: 600px;
@@ -11,6 +15,12 @@
     margin-left: calc(var(--space-100) * -1);
 }
 
+.post-headings .texarea-container {
+    height: fit-content;
+}
+.post-headings textarea {
+    height: auto;
+}
 .post-title-input {
     font-size: 32px;
     font-family: 'Playfair Display';

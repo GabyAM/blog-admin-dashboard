@@ -29,7 +29,7 @@ export function fetchPost(id, token) {
         options.credentials = 'include';
         options.headers = { Authorization: `bearer ${token}` };
     }
-    return fetch(`http://localhost:3000/post/${id}`).then((res) => {
+    return fetch(`http://localhost:3000/post/${id}`, options).then((res) => {
         if (!res.ok) {
             throw new Error('');
         }
@@ -84,6 +84,22 @@ export function submitEditPost(id, formData, token) {
     }).then((res) => {
         if (!res.ok) {
             throw new Error('');
+        }
+        return res.json();
+    });
+}
+
+export function submitCreatePost(formData, token) {
+    return fetch('http://localhost:3000/post', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+        body: formData
+    }).then((res) => {
+        if (!res.ok) {
+            throw new Error('Failed at creating post');
         }
         return res.json();
     });

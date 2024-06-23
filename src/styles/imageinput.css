@@ -11,10 +11,6 @@
 .image-input-container .custom-image-input {
     z-index: 1;
 }
-.image-input-container.image-input-container.uploaded .custom-image-input {
-    background-color: rgba(0, 0, 0, 0.3);
-    color: white;
-}
 
 .image-input-container.uploaded img {
     z-index: 0;
@@ -26,22 +22,22 @@
 
 .custom-image-input {
     display: block;
-    background-color: var(--green-100);
-    color: var(--green-900);
+    background-color: rgba(0, 0, 0, 0.3);
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    color: white;
     align-items: center;
     justify-content: center;
     border-radius: var(--space-300);
+}
+.custom-image-input:hover {
+    opacity: 1;
 }
 
 .custom-image-input div {
     justify-content: center;
     align-items: center;
     height: 100%;
-}
-
-.custom-image-input:hover > div {
-    transition: transform 0.3s ease;
-    transform: scale(1.05);
 }
 
 .custom-image-input span {

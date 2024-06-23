@@ -1,0 +1,5 @@
+.error-label {
+    align-items: center;
+    color: var(--main-red);
+    gap: var(--space-100);
+}

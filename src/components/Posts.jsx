@@ -1,5 +1,6 @@
 import { PostCard } from './PostCard';
 import { PostCardSkeleton } from './PostCardSkeleton';
+import '../styles/posts.css';
 
 export function Posts({
     title,

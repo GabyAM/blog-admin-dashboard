@@ -8,6 +8,13 @@
     padding: var(--space-200) var(--space-300);
     border-radius: var(--space-300);
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.25);
+    z-index: 10;
+}
+.popup-menu.hidden {
+    display: none;
+}
+.popup-menu.left {
+    transform: translateX(-100%);
 }
 
 .popup-menu-separator {
@@ -28,6 +35,8 @@
     padding: 0 var(--space-100);
     transition: background-color 0.3s ease;
     border-radius: var(--space-300);
+    font-size: 16px;
+    text-decoration: none;
 }
 .popup-menu-option:hover {
     background-color: var(--main-grey);

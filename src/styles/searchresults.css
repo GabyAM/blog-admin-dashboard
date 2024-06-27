@@ -1,0 +1,35 @@
+.tabs-list {
+    max-width: 700px;
+    width: 100%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    position: relative;
+}
+
+.tabs-list .tab-container {
+    text-align: center;
+}
+
+.tab-container .tab {
+    font-size: 20px;
+    background-color: transparent;
+    border: none;
+    transition: font-weight 0.3s ease;
+}
+
+.tab.selected {
+    font-weight: 700;
+}
+
+.tab-underline {
+    position: absolute;
+    bottom: -4px;
+    transition:
+        width 0.4s ease,
+        left 0.3s ease;
+    height: 6px;
+    background-color: var(--green-500);
+    box-sizing: content-box;
+    border-radius: 6px;
+}

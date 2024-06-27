@@ -1,7 +1,10 @@
-function fetchPosts(limit, pageParam, published, token) {
+function fetchPosts(limit, pageParam, published, search, token) {
     let url = `http://localhost:3000/posts?is_published=${published}&limit=${limit}`;
     if (pageParam)
         url += `&lastId=${pageParam._id}&lastCreatedAt=${pageParam.createdAt}`;
+    if (search) {
+        url += `&search=${search}`;
+    }
     const options = {};
     if (token) {
         options.credentials = 'include';
@@ -15,12 +18,12 @@ function fetchPosts(limit, pageParam, published, token) {
     });
 }
 
-export function fetchPublishedPosts(limit, pageParam) {
-    return fetchPosts(limit, pageParam, true);
+export function fetchPublishedPosts(limit, pageParam, search) {
+    return fetchPosts(limit, pageParam, true, search);
 }
 
-export function fetchUnpublishedPosts(limit, pageParam, token) {
-    return fetchPosts(limit, pageParam, false, token);
+export function fetchUnpublishedPosts(limit, pageParam, search, token) {
+    return fetchPosts(limit, pageParam, false, search, token);
 }
 
 export function fetchPost(id, token) {

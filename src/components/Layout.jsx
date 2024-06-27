@@ -5,6 +5,8 @@ import { Header } from './Header';
 import { useAuth } from '../hooks/useAuth';
 import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
+import { SearchResults } from './SearchResults';
+import { useSearch } from '../hooks/useSearch';
 
 export function Layout() {
     const navigate = useNavigate();
@@ -14,6 +16,7 @@ export function Layout() {
             return navigate('/login');
         }
     }, [token, loading]);
+    const { search } = useSearch();
     if (token && !loading) {
         return (
             <div className="main-layout">
@@ -30,7 +33,11 @@ export function Layout() {
                         }}
                     ></Toaster>
                     <div className="container flex-col">
-                        <Outlet></Outlet>
+                        {search ? (
+                            <SearchResults></SearchResults>
+                        ) : (
+                            <Outlet></Outlet>
+                        )}
                     </div>
                 </div>
             </div>

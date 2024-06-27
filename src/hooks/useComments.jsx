@@ -10,9 +10,12 @@ import {
     submitDeleteComment,
     submitEditComment
 } from '../api/comment';
+import { useSearch } from './useSearch';
 
-export function useComments(search) {
+export function useComments() {
     const { encodedToken } = useAuth();
+    const { search } = useSearch();
+
     const {
         data: comments,
         isLoading,
@@ -22,8 +25,8 @@ export function useComments(search) {
         isFetchNextPageError,
         hasNextPage
     } = useInfiniteQuery({
-        queryKey: ['comments'],
-        queryFn: ({ pageParam }) => fetchComments(pageParam, 4),
+        queryKey: ['comments', search],
+        queryFn: ({ pageParam }) => fetchComments(pageParam, 4, search),
         initialPageParam: null,
         getNextPageParam: (lastPage) => lastPage.metadata.nextPageParams
     });

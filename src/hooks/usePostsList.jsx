@@ -12,6 +12,8 @@ import {
     submitPublishPost,
     submitUnpublishPost
 } from '../api/post';
+import { useSearch } from './useSearch';
+import { useEffect } from 'react';
 
 export function usePostsList({ published }) {
     const { encodedToken } = useAuth();
@@ -19,6 +21,9 @@ export function usePostsList({ published }) {
     const fetchFn = published ? fetchPublishedPosts : fetchUnpublishedPosts;
     const currentKey = published ? 'published_posts' : 'unpublished_posts';
     const otherKey = published ? 'unpublished_posts' : 'published_posts';
+
+    const { search } = useSearch();
+
     const {
         data: posts,
         isLoading,
@@ -28,8 +33,8 @@ export function usePostsList({ published }) {
         isFetchNextPageError,
         hasNextPage
     } = useInfiniteQuery({
-        queryKey: [currentKey],
-        queryFn: ({ pageParam }) => fetchFn(4, pageParam, encodedToken),
+        queryKey: [currentKey, search],
+        queryFn: ({ pageParam }) => fetchFn(4, pageParam, search, encodedToken),
         initialPageParam: null,
         getNextPageParam: (lastPage) => lastPage.metadata.nextPageParams
     });

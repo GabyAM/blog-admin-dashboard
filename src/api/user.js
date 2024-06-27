@@ -1,4 +1,4 @@
-function fetchUsers(role, limit = 6) {
+function fetchUsers(role, search, limit = 6) {
     let url = `http://localhost:3000/users?limit=${limit}`;
     if (role === 'user') {
         url += '&is_banned=false&is_admin=false';
@@ -6,6 +6,9 @@ function fetchUsers(role, limit = 6) {
         url += '&is_admin=true';
     } else if (role === 'banned') {
         url += '&is_banned=true';
+    }
+    if (search) {
+        url += `&search=${search}`;
     }
     return fetch(url).then((res) => {
         if (!res.ok) {
@@ -15,16 +18,16 @@ function fetchUsers(role, limit = 6) {
     });
 }
 
-export function fetchRegularUsers(limit) {
-    return fetchUsers('user', limit);
+export function fetchRegularUsers(limit, search) {
+    return fetchUsers('user', search, limit);
 }
 
-export function fetchAdmins(limit) {
-    return fetchUsers('admin', limit);
+export function fetchAdmins(limit, search) {
+    return fetchUsers('admin', search, limit);
 }
 
-export function fetchBannedUsers(limit) {
-    return fetchUsers('banned', limit);
+export function fetchBannedUsers(limit, search) {
+    return fetchUsers('banned', search, limit);
 }
 
 export function updateUserRole(id, action, token) {

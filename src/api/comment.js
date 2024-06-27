@@ -1,7 +1,10 @@
-export function fetchComments(pageParam, limit) {
+export function fetchComments(pageParam, limit, search) {
     let url = `http://localhost:3000/comments?limit=${limit}`;
     if (pageParam)
         url += `&lastId=${pageParam._id}&lastCreatedAt=${pageParam.createdAt}`;
+    if (search) {
+        url += `&search=${search}`;
+    }
     return fetch(url).then((res) => {
         if (!res.ok) {
             throw new Error('');

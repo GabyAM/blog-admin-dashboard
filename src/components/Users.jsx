@@ -2,7 +2,7 @@ import { Admins } from './Admins';
 import { RegularUsers } from './RegularUsers';
 import { BannedUsers } from './BannedUsers';
 
-export function Users({ search }) {
+export function Users() {
     return (
         <>
             <RegularUsers></RegularUsers>

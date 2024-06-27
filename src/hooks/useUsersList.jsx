@@ -12,9 +12,11 @@ import {
     updateUserRole
 } from '../api/user';
 import toast from 'react-hot-toast';
+import { useSearch } from './useSearch';
 
 export function useUsersList(type) {
     const { encodedToken } = useAuth();
+    const { search } = useSearch();
 
     const fetchFn =
         type === 'regular_users'
@@ -31,8 +33,8 @@ export function useUsersList(type) {
         isFetchNextPageError,
         hasNextPage
     } = useInfiniteQuery({
-        queryKey: [type],
-        queryFn: () => fetchFn(6),
+        queryKey: [type, search],
+        queryFn: () => fetchFn(6, search),
         initialPageParam: null,
         getNextPageParam: (lastPage) => lastPage.metadata.nextPageParams
     });

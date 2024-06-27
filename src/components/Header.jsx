@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import '../styles/header.css';
 import { useAuth } from '../hooks/useAuth';
+import { SearchBar } from './SearchBar';
 
 export function Header() {
     const navigate = useNavigate();
@@ -14,11 +15,7 @@ export function Header() {
                 New post
             </button>
             <div className="main-search-bar-section">
-                <input
-                    className="main-search-bar"
-                    type="text"
-                    placeholder="Search posts, users, comments"
-                ></input>
+                <SearchBar></SearchBar>
             </div>
             <div className="user-card"></div>
         </header>

@@ -2,9 +2,15 @@ import { useEffect, useState } from 'react';
 import { useSearch } from '../hooks/useSearch';
 
 export function SearchBar() {
-    const { setSearch: setContextSearch } = useSearch();
+    const { search: contextSearch, setSearch: setContextSearch } = useSearch();
 
     const [search, setSearch] = useState('');
+
+    useEffect(() => {
+        if (contextSearch === '' && search !== '') {
+            setSearch('');
+        }
+    }, [contextSearch]);
     useEffect(() => {
         const timer = setTimeout(() => {
             setContextSearch(search);

@@ -90,15 +90,11 @@
 }
 
 .comment-actions.edit-mode {
-    display: grid;
-    grid-template-columns: 1fr 2.5fr 1fr;
+    display: flex;
+    justify-content: space-between;
 }
 .comment-actions.edit-mode button:last-of-type {
     grid-column-start: 3;
-}
-
-.comment-actions > * {
-    padding: 0.25em 0;
 }
 
 .comment-actions .replies-button {

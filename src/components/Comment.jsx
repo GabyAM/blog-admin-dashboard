@@ -154,7 +154,7 @@ export function Comment({ comment, onEdit, onDelete }) {
                             <>
                                 <button
                                     onClick={() => setIsEditing(false)}
-                                    className="action-button secondary-button"
+                                    className="tertiary-button rounded small"
                                 >
                                     Cancel
                                 </button>
@@ -167,7 +167,7 @@ export function Comment({ comment, onEdit, onDelete }) {
                                         );
                                         setIsEditing(false);
                                     }}
-                                    className="action-button primary-button"
+                                    className="primary-button rounded small"
                                 >
                                     Submit
                                 </button>

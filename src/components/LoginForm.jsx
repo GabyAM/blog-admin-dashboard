@@ -1,7 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import { ErrorLabel } from './ErrorLabel';
+import { submitLogin } from '../api/auth';
 
 export function LoginForm() {
     const navigate = useNavigate();
@@ -16,50 +18,30 @@ export function LoginForm() {
     const {
         register,
         handleSubmit,
-        formState: { errors }
+        formState: { errors },
+        setError
     } = useForm();
-    const [serverErrors, setServerErrors] = useState(null);
-    async function onSubmit(formData) {
-        const response = await fetch('http://localhost:3000/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData),
-            credentials: 'include'
-        });
-        const jsonResponse = await response.json();
-        if (!response.ok) {
-            if (!jsonResponse.errors) {
-                throw new Error('Something went wrong while fetching data');
-            }
-            setServerErrors(jsonResponse.errors);
-        } else {
-            setServerErrors(null);
-            updateToken(jsonResponse.accessToken);
-            navigate('/');
-        }
+
+    function onSubmit(formData) {
+        return submitLogin(formData)
+            .then((res) => {
+                if (res.errors) {
+                    const errors = res.errors;
+                    Object.keys(errors).forEach((key) => {
+                        setError(key, { type: 'server', message: errors[key] });
+                    });
+                } else {
+                    updateToken(res.accessToken);
+                    navigate('/');
+                }
+            })
+            .catch((e) => {
+                setError('root.serverError', {
+                    type: 'server',
+                    message: 'There was an error'
+                });
+            });
     }
-
-    function getFormErrors(clientErrors, serverErrors) {
-        const mappedClientErrors = {};
-        Object.keys(clientErrors).forEach((key) => {
-            mappedClientErrors[key] = clientErrors[key].message;
-        });
-        return Object.assign(mappedClientErrors, serverErrors);
-    }
-    const formErrors = getFormErrors(errors, serverErrors);
-
-    function handleInputChange(e) {
-        const { name } = e.target;
-
-        if (serverErrors[name]) {
-            const newErrors = { ...serverErrors };
-            delete newErrors[name];
-            setServerErrors(newErrors);
-        }
-    }
-
     if (!token && !loading) {
         return (
             <div className="login-layout flex-col">
@@ -86,13 +68,10 @@ export function LoginForm() {
                                             'Email must be in the correct format'
                                     }
                                 })}
-                                onChange={handleInputChange}
                                 placeholder="Email"
                             />
-                            {formErrors.email && (
-                                <span className="form-error flex-row">
-                                    <span>{formErrors.email}</span>
-                                </span>
+                            {errors.email && (
+                                <ErrorLabel>{errors.email.message}</ErrorLabel>
                             )}
                         </div>
 
@@ -109,17 +88,21 @@ export function LoginForm() {
                                             'Password must have at least 8 characters'
                                     }
                                 })}
-                                onChange={handleInputChange}
                                 placeholder="Password"
                             />
-                            {formErrors.password && (
-                                <span className="form-error flex-row">
-                                    <span>{formErrors.password}</span>
-                                </span>
+                            {errors.password && (
+                                <ErrorLabel>
+                                    {errors.password.message}
+                                </ErrorLabel>
                             )}
                         </div>
 
                         <button className="login-button">Log in</button>
+                        {errors && errors.root && errors.root.serverError && (
+                            <ErrorLabel>
+                                {errors.root.serverError.message}
+                            </ErrorLabel>
+                        )}
                     </form>
                 </div>
             </div>

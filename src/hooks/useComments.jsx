@@ -33,7 +33,7 @@ export function useComments() {
 
     const queryClient = useQueryClient();
     function updateComment(id, update) {
-        queryClient.setQueryData(['comments'], (prevData) => ({
+        queryClient.setQueryData(['comments', search], (prevData) => ({
             ...prevData,
             pages: prevData.pages.map((page) => ({
                 ...page,
@@ -71,22 +71,20 @@ export function useComments() {
     const deleteMutation = useMutation({
         mutationKey: ['delete_comment'],
         onMutate: (id) => updateComment(id, { isPending: true }),
-        mutationFn: (id) => {
-            console.log('minga');
-            return submitDeleteComment(id, encodedToken);
-        },
+        mutationFn: (id) => submitDeleteComment(id, encodedToken),
         onSuccess: (data, id) => {
             updateComment(id, { user: null, text: '', isPending: false });
         },
         onError: (e, id) => {
             updateComment(id, { isPending: false });
+            throw new Error("Couldn't delete comment");
         }
     });
     function handleCommentDelete(id) {
-        toast.promise(deleteMutation.mutateAsync(id), {
+        return toast.promise(deleteMutation.mutateAsync(id), {
             loading: 'Deleting comment...',
             success: 'Comment deleted!',
-            error: "Couldn't delete comment"
+            error: (e) => e.message
         });
     }
 

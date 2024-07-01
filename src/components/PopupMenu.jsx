@@ -1,26 +1,11 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import '../styles/popupmenu.css';
+import { useClickOutside } from '../hooks/useClickOutside';
 
 export function PopupMenu({ children, onClickOutside }) {
-    const ref = useRef(null);
-    const [isMounted, setIsMounted] = useState(false);
-    const [isLeft, setIsLeft] = useState(false);
-    useEffect(() => {
-        setIsMounted(true);
-        function handleClickOutside(e) {
-            if (ref.current && !ref.current.contains(e.target)) {
-                onClickOutside();
-            }
-        }
+    const ref = useClickOutside(onClickOutside);
 
-        if (isMounted) {
-            document.addEventListener('click', handleClickOutside);
-        }
-        return () => {
-            document.removeEventListener('click', handleClickOutside);
-            setIsMounted(false);
-        };
-    }, [isMounted]);
+    const [isLeft, setIsLeft] = useState(false);
     function handlePositionMenu() {
         if (ref.current) {
             const width = ref.current.getBoundingClientRect().width;

@@ -6,10 +6,10 @@ import { Drafts } from './components/Drafts';
 import { PublishedPosts } from './components/PublishedPosts';
 import { AllPosts } from './components/AllPosts';
 import { Comments } from './components/Comments';
-import { Users } from './components/Users';
 import { RegularUsers } from './components/RegularUsers';
 import { Admins } from './components/Admins';
 import { BannedUsers } from './components/BannedUsers';
+import { AllUsers } from './components/AllUsers';
 
 export function Router() {
     const router = createBrowserRouter([
@@ -39,7 +39,7 @@ export function Router() {
                 },
                 {
                     path: '/users',
-                    element: <Users></Users>
+                    element: <AllUsers></AllUsers>
                 },
                 {
                     path: '/users/regular',

@@ -38,14 +38,15 @@ export function UserCard({ user, onChangeRole, onDelete }) {
                             >
                                 {!user.is_banned && (
                                     <button
-                                        onClick={() =>
+                                        onClick={() => {
                                             onChangeRole(
                                                 user.is_admin
                                                     ? 'demote'
                                                     : 'promote',
                                                 user._id
-                                            )
-                                        }
+                                            );
+                                            setIsMenuOpen(false);
+                                        }}
                                         className="popup-menu-option"
                                     >
                                         {user.is_admin ? (
@@ -61,12 +62,13 @@ export function UserCard({ user, onChangeRole, onDelete }) {
                                     </button>
                                 )}
                                 <button
-                                    onClick={() =>
+                                    onClick={() => {
                                         onChangeRole(
                                             user.is_banned ? 'unban' : 'ban',
                                             user._id
-                                        )
-                                    }
+                                        );
+                                        setIsMenuOpen(false);
+                                    }}
                                     className="popup-menu-option"
                                 >
                                     {user.is_banned ? (
@@ -79,7 +81,10 @@ export function UserCard({ user, onChangeRole, onDelete }) {
                                     </span>
                                 </button>
                                 <button
-                                    onClick={() => onDelete(user._id)}
+                                    onClick={() => {
+                                        onDelete(user._id);
+                                        setIsMenuOpen(false);
+                                    }}
                                     className="popup-menu-option"
                                 >
                                     <UserRemoveIcon></UserRemoveIcon>

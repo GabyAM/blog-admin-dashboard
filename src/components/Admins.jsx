@@ -1,4 +1,4 @@
-import { UsersGrid } from './UsersGrid';
+import { Users } from './Users';
 import { useUsersList } from '../hooks/useUsersList';
 
 export function Admins() {
@@ -13,7 +13,7 @@ export function Admins() {
         handleDeleteUser
     } = useUsersList('admin_users');
     return (
-        <UsersGrid
+        <Users
             title="Admins"
             users={users}
             loading={isLoading}
@@ -23,6 +23,6 @@ export function Admins() {
             nextPageError={isFetchNextPageError}
             changeUserRole={handleChangeUserRole}
             deleteUser={handleDeleteUser}
-        ></UsersGrid>
+        ></Users>
     );
 }

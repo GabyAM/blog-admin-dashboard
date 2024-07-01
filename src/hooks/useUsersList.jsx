@@ -41,7 +41,7 @@ export function useUsersList(type) {
 
     const queryClient = useQueryClient();
     function updateUser(id, update) {
-        queryClient.setQueryData([type], (prevData) => ({
+        queryClient.setQueryData([type, search], (prevData) => ({
             ...prevData,
             pages: prevData.pages.map((page) => ({
                 ...page,
@@ -52,7 +52,7 @@ export function useUsersList(type) {
         }));
     }
     function deleteUser(id) {
-        queryClient.setQueryData([type], (prevData) => ({
+        queryClient.setQueryData([type, search], (prevData) => ({
             ...prevData,
             pages: prevData.pages.map((page) => ({
                 ...page,
@@ -77,8 +77,8 @@ export function useUsersList(type) {
             } else if (action === 'ban') {
                 otherUsers = 'banned_users';
             }
-            if (queryClient.getQueryData([otherUsers])) {
-                queryClient.setQueryData([otherUsers], (prevData) => {
+            if (queryClient.getQueryData([otherUsers, search])) {
+                queryClient.setQueryData([otherUsers, search], (prevData) => {
                     if (!prevData) return prevData;
                     return {
                         ...prevData,
@@ -95,8 +95,10 @@ export function useUsersList(type) {
                 });
             }
         },
-        onError: (e, variables) =>
-            updateUser(variables.id, { isPending: false })
+        onError: (e, variables) => {
+            updateUser(variables.id, { isPending: false });
+            throw new Error(`Couldn't ${variables.action} the user`);
+        }
     });
 
     function handleChangeUserRole(action, id) {
@@ -115,7 +117,7 @@ export function useUsersList(type) {
         toast.promise(changeRoleMutation.mutateAsync({ id, action }), {
             loading: loadingTexts[action],
             success: successTexts[action],
-            error: () => `Couldn't ${action} the user`
+            error: (e) => e.message
         });
     }
 
@@ -123,15 +125,17 @@ export function useUsersList(type) {
         mutationKey: ['delete_user'],
         onMutate: (id) => updateUser(id, { isPending: true }),
         mutationFn: (id) => submitDeleteUser(id, encodedToken),
-        onSuccess: (data, variables) => deleteUser(variables.id),
-        onError: (e, variables) =>
-            updateUser(variables.id, { isPending: false })
+        onSuccess: (data, id) => deleteUser(id),
+        onError: (e, id) => {
+            updateUser(id, { isPending: false });
+            throw new Error("Couldn't delete user");
+        }
     });
     function handleDeleteUser(id) {
-        toast.promise(deleteMutation.mutateAsync(id), {
+        return toast.promise(deleteMutation.mutateAsync(id), {
             loading: 'Deleting user...',
             success: 'User deleted',
-            error: () => "Couldn't delete user"
+            error: (e) => e.message
         });
     }
 

@@ -1,5 +1,5 @@
 import { useUsersList } from '../hooks/useUsersList';
-import { UsersGrid } from './UsersGrid';
+import { Users } from './Users';
 
 export function BannedUsers() {
     const {
@@ -13,7 +13,7 @@ export function BannedUsers() {
         handleDeleteUser
     } = useUsersList('banned_users');
     return (
-        <UsersGrid
+        <Users
             title="Banned users"
             users={users}
             loading={isLoading}
@@ -23,6 +23,6 @@ export function BannedUsers() {
             nextPageError={isFetchNextPageError}
             changeUserRole={handleChangeUserRole}
             deleteUser={handleDeleteUser}
-        ></UsersGrid>
+        ></Users>
     );
 }

@@ -41,7 +41,7 @@ export function usePostsList({ published }) {
 
     const queryClient = useQueryClient();
     function updatePost(id, update) {
-        queryClient.setQueryData([currentKey], (prevData) => ({
+        queryClient.setQueryData([currentKey, search], (prevData) => ({
             ...prevData,
             pages: prevData.pages.map((page) => ({
                 ...page,
@@ -53,7 +53,7 @@ export function usePostsList({ published }) {
     }
 
     function deletePost(id) {
-        queryClient.setQueryData([currentKey], (prevData) => ({
+        queryClient.setQueryData([currentKey, search], (prevData) => ({
             ...prevData,
             pages: prevData.pages.map((page) => ({
                 ...page,
@@ -94,7 +94,6 @@ export function usePostsList({ published }) {
                     };
                 });
             }
-            console.log(queryClient.getQueryData([otherKey]));
         },
         onError: (e, id) => {
             updatePost(id, { isPending: false });
@@ -112,17 +111,19 @@ export function usePostsList({ published }) {
     const deleteMutation = useMutation({
         mutationKey: ['delete_post'],
         onMutate: (id) => updatePost(id, { isPending: true }),
-        mutationFn: (id) => submitDeletePost(id),
-        onSuccess: (data, variables) => deletePost(variables.id),
-        onError: (e, variables) =>
-            updatePost(variables.id, { isPending: false })
+        mutationFn: (id) => submitDeletePost(id, encodedToken),
+        onSuccess: (data, id) => deletePost(id),
+        onError: (e, id) => {
+            updatePost(id, { isPending: false });
+            throw new Error("Couldn't delete the post");
+        }
     });
 
     function handleDeletePost(id) {
-        toast.promise(deleteMutation.mutateAsync(id), {
+        return toast.promise(deleteMutation.mutateAsync(id), {
             loading: 'Deleting post...',
             success: 'Post deleted!',
-            error: (error) => `${error.message}`
+            error: (error) => error.message
         });
     }
 

@@ -1,0 +1,57 @@
+.popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    min-width: 100%;
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(1px);
+    z-index: 10;
+}
+
+.popup-card {
+    background-color: white;
+    max-width: 500px;
+    padding: var(--space-500) var(--space-500);
+    border: 1px solid var(--dark-grey);
+    border-radius: var(--space-300);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-600);
+}
+.popup-card .popup-card-headings {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-100);
+}
+.popup-card h1 {
+    font-size: 2em;
+    font-weight: 500;
+    color: var(--green-900);
+}
+
+.popup-card .popup-card-actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-500);
+    margin-bottom: var(--space-100);
+}
+.popup-card-actions > * {
+    flex: 1;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+}
+
+.popup-card-actions .delete-button {
+    background-color: var(--main-red);
+    color: white;
+    border: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-100);
+}

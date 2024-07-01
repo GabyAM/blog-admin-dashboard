@@ -10,6 +10,7 @@ import { RegularUsers } from './components/RegularUsers';
 import { Admins } from './components/Admins';
 import { BannedUsers } from './components/BannedUsers';
 import { AllUsers } from './components/AllUsers';
+import { Overview } from './components/Overview';
 
 export function Router() {
     const router = createBrowserRouter([
@@ -17,6 +18,10 @@ export function Router() {
             path: '/',
             element: <Layout></Layout>,
             children: [
+                {
+                    index: true,
+                    element: <Overview></Overview>
+                },
                 {
                     path: '/post/:id',
                     element: <EditPost></EditPost>

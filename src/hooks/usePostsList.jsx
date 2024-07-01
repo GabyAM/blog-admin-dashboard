@@ -13,9 +13,8 @@ import {
     submitUnpublishPost
 } from '../api/post';
 import { useSearch } from './useSearch';
-import { useEffect } from 'react';
 
-export function usePostsList({ published }) {
+export function usePostsList({ published, enabled }) {
     const { encodedToken } = useAuth();
 
     const fetchFn = published ? fetchPublishedPosts : fetchUnpublishedPosts;
@@ -36,7 +35,8 @@ export function usePostsList({ published }) {
         queryKey: [currentKey, search],
         queryFn: ({ pageParam }) => fetchFn(4, pageParam, search, encodedToken),
         initialPageParam: null,
-        getNextPageParam: (lastPage) => lastPage.metadata.nextPageParams
+        getNextPageParam: (lastPage) => lastPage.metadata.nextPageParams,
+        enabled
     });
 
     const queryClient = useQueryClient();
@@ -77,8 +77,8 @@ export function usePostsList({ published }) {
                 );
             }
             deletePost(id);
-            if (queryClient.getQueryData([otherKey])) {
-                queryClient.setQueryData([otherKey], (prevData) => {
+            if (queryClient.getQueryData([otherKey, search])) {
+                queryClient.setQueryData([otherKey, search], (prevData) => {
                     if (!prevData) return prevData;
                     return {
                         ...prevData,

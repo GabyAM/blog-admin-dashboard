@@ -18,10 +18,10 @@ export function PublishedPosts() {
         <Posts
             title={'Published posts'}
             posts={posts}
-            loading={isLoading}
+            isLoading={isLoading}
             error={error}
             fetchNextPage={fetchNextPage}
-            loadingNextPage={isFetchNextPageError}
+            isFetchingNextPage={isFetchingNextPage}
             hasNextPage={hasNextPage}
             updatePostStatus={(id) => handleUpdatePostStatus(id)}
             deletePost={(id) => handleDeletePost(id)}

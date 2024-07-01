@@ -14,7 +14,7 @@ import {
 import toast from 'react-hot-toast';
 import { useSearch } from './useSearch';
 
-export function useUsersList(type) {
+export function useUsersList({ type, enabled = true }) {
     const { encodedToken } = useAuth();
     const { search } = useSearch();
 
@@ -36,7 +36,8 @@ export function useUsersList(type) {
         queryKey: [type, search],
         queryFn: () => fetchFn(6, search),
         initialPageParam: null,
-        getNextPageParam: (lastPage) => lastPage.metadata.nextPageParams
+        getNextPageParam: (lastPage) => lastPage.metadata.nextPageParams,
+        enabled
     });
 
     const queryClient = useQueryClient();

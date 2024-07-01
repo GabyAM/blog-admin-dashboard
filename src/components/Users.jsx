@@ -7,12 +7,12 @@ import { DeletePopup } from './DeletePopup';
 export function Users({
     title,
     users,
-    loading,
+    isLoading,
     error,
     fetchNextPage,
     hasNextPage,
-    loadingNextPage,
-    nextPageError,
+    isFetchingNextPage,
+    isFetchNextPageError,
     changeUserRole,
     deleteUser
 }) {
@@ -30,7 +30,7 @@ export function Users({
                 )}
                 <h1 className="section-title">{title}</h1>
                 <div className="users-grid">
-                    {loading ? (
+                    {isLoading ? (
                         <>
                             <UserCardSkeleton></UserCardSkeleton>
                             <UserCardSkeleton></UserCardSkeleton>
@@ -50,7 +50,7 @@ export function Users({
                             ))
                         )
                     )}
-                    {loadingNextPage && (
+                    {isFetchingNextPage && (
                         <>
                             <UserCardSkeleton></UserCardSkeleton>
                             <UserCardSkeleton></UserCardSkeleton>
@@ -59,7 +59,7 @@ export function Users({
                         </>
                     )}
                 </div>
-                {hasNextPage && !loading && !loadingNextPage && (
+                {hasNextPage && !isLoading && !isFetchingNextPage && (
                     <button
                         className="load-more-button"
                         onClick={() => {

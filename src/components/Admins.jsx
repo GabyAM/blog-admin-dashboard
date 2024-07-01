@@ -11,15 +11,15 @@ export function Admins() {
         isFetchNextPageError,
         handleChangeUserRole,
         handleDeleteUser
-    } = useUsersList('admin_users');
+    } = useUsersList({ type: 'admin_users' });
     return (
         <Users
             title="Admins"
             users={users}
-            loading={isLoading}
+            isLoading={isLoading}
             error={error}
             fetchNextPage={fetchNextPage}
-            loadingNextPage={isFetchingNextPage}
+            isFetchingNextPage={isFetchingNextPage}
             nextPageError={isFetchNextPageError}
             changeUserRole={handleChangeUserRole}
             deleteUser={handleDeleteUser}

@@ -7,10 +7,10 @@ import { DeletePopup } from './DeletePopup';
 export function Posts({
     title,
     posts,
-    loading,
+    isLoading,
     error,
     fetchNextPage,
-    loadingNextPage,
+    isFetchingNextPage,
     hasNextPage,
     updatePostStatus,
     deletePost
@@ -29,7 +29,7 @@ export function Posts({
                             onClickOutside={() => setDeletingId(null)}
                         ></DeletePopup>
                     )}
-                    {loading ? (
+                    {isLoading ? (
                         <>
                             <PostCardSkeleton></PostCardSkeleton>
                             <PostCardSkeleton></PostCardSkeleton>
@@ -50,7 +50,7 @@ export function Posts({
                             ))
                         )
                     )}
-                    {loadingNextPage && (
+                    {isFetchingNextPage && (
                         <>
                             <PostCardSkeleton></PostCardSkeleton>
                             <PostCardSkeleton></PostCardSkeleton>
@@ -59,7 +59,7 @@ export function Posts({
                         </>
                     )}
                 </div>
-                {hasNextPage && !loading && !loadingNextPage && (
+                {hasNextPage && !isLoading && !isFetchingNextPage && (
                     <button
                         className="load-more-button"
                         onClick={() => {

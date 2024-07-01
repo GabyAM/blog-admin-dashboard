@@ -11,15 +11,15 @@ export function BannedUsers() {
         isFetchNextPageError,
         handleChangeUserRole,
         handleDeleteUser
-    } = useUsersList('banned_users');
+    } = useUsersList({ type: 'banned_users' });
     return (
         <Users
             title="Banned users"
             users={users}
-            loading={isLoading}
+            isLoading={isLoading}
             error={error}
             fetchNextPage={fetchNextPage}
-            loadingNextPage={isFetchingNextPage}
+            isFetchingNextPage={isFetchingNextPage}
             nextPageError={isFetchNextPageError}
             changeUserRole={handleChangeUserRole}
             deleteUser={handleDeleteUser}

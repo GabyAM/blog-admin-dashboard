@@ -11,15 +11,15 @@ export function RegularUsers() {
         isFetchNextPageError,
         handleChangeUserRole,
         handleDeleteUser
-    } = useUsersList('regular_users');
+    } = useUsersList({ type: 'regular_users' });
     return (
         <Users
             title="Users"
             users={users}
-            loading={isLoading}
+            isLoading={isLoading}
             error={error}
             fetchNextPage={fetchNextPage}
-            loadingNextPage={isFetchingNextPage}
+            isFetchingNextPage={isFetchingNextPage}
             nextPageError={isFetchNextPageError}
             changeUserRole={handleChangeUserRole}
             deleteUser={handleDeleteUser}

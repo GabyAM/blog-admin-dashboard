@@ -7,6 +7,7 @@ import { EditorComponent } from './EditorComponent';
 import { SmartTextarea } from './SmartTextarea';
 import { ErrorLabel } from './ErrorLabel';
 import { PostFormActions } from './PostFormActions';
+import { PostFormSubmitButton } from './PostFormSubmitButton';
 
 const formDefaultValues = {
     title: '',
@@ -239,24 +240,22 @@ export function PostForm({
                         error={errors?.text?.message ?? null}
                     ></EditorComponent>
                 </section>
-                <button
-                    type="button"
-                    className={
-                        'save-post-button large rounded primary-button' +
-                        ` ${!isDirty || isSubmitting ? 'pending' : ''} ${errors?.root ? 'error' : ''}`
-                    }
-                    onClick={() => {
-                        if (
-                            isDirty &&
-                            !isSubmitting &&
-                            !(errors && errors.root)
-                        ) {
-                            handleSubmit(handleFormSubmit)();
-                        }
-                    }}
+                <PostFormSubmitButton
                     disabled={
-                        !isDirty || isSubmitting || (errors && errors.root)
+                        !isDirty ||
+                        (post.is_published && !isValid) ||
+                        isSubmitting ||
+                        (errors && errors.root)
                     }
+                    text={
+                        isSubmitting
+                            ? 'Saving'
+                            : errors?.root
+                              ? 'Error'
+                              : 'Save'
+                    }
+                    onSubmit={handleSubmit(handleFormSubmit)}
+                    isError={errors?.root || false}
                 >
                     <span>Saving</span>
                     <span>
@@ -266,7 +265,7 @@ export function PostForm({
                               ? 'Error'
                               : 'Save'}
                     </span>
-                </button>
+                </PostFormSubmitButton>
             </form>
             {post && (
                 <PostFormActions

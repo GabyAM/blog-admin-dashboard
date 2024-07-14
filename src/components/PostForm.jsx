@@ -20,6 +20,16 @@ const formDefaultValues = {
         formatted: ''
     }
 };
+function validateImage(file) {
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) return 'File exceeds max size';
+
+    const acceptedTypes = /image\/(jpeg|jpg|png|gif|webp)/;
+
+    if (!acceptedTypes.test(file.type)) {
+        return 'Invalid file type';
+    }
+}
 
 function validate(values) {
     const errors = {};
@@ -62,6 +72,16 @@ function validate(values) {
             type: 'minLength',
             message: 'Post content must contain at least than 50 characters'
         };
+    }
+
+    if (values.image.file) {
+        const imageError = validateImage(values.image.file);
+        if (imageError) {
+            errors.image = {
+                type: 'validate',
+                message: imageError
+            };
+        }
     }
 
     return errors;
@@ -154,14 +174,16 @@ export function PostForm({
     useEffect(() => {
         function handleValidation(values) {
             const errors = validate(values);
-            if (post && post.is_published) {
-                Object.keys(values).forEach((name) => {
-                    if (errors[name]) {
-                        setError(name, errors[name]);
-                    } else {
-                        clearErrors(name);
-                    }
-                });
+            if (post) {
+                if (post.is_published) {
+                    Object.keys(values).forEach((name) => {
+                        if (errors[name]) {
+                            setError(name, errors[name]);
+                        } else {
+                            clearErrors(name);
+                        }
+                    });
+                } else if (errors.image) setError('image', errors.image);
             }
             setIsValid((prev) => {
                 const newValue = Object.keys(errors).length === 0;
@@ -178,7 +200,6 @@ export function PostForm({
         }
 
         return () => subscription.unsubscribe();
-        // TODO: add image validation
     }, [clearErrors, getValues, isValid, post, setError, watch]);
 
     return (

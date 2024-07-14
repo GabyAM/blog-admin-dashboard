@@ -1,47 +1,14 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import '../styles/editpost.css';
+import React, { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { fetchPost, submitEditPost } from '../api/post';
-import { useQuery } from '@tanstack/react-query';
+import { fetchPost, submitDeletePost, submitEditPost } from '../api/post';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { PostForm } from './PostForm';
-
-const publishedValidations = {
-    title: {
-        minLength: {
-            value: 8,
-            message: "Post title can't be shorter that 8 characters"
-        },
-        maxLength: {
-            value: 80,
-            message: "Post title can't be longer than 80 characters"
-        }
-    },
-    summary: {
-        minLength: {
-            value: 8,
-            message: "Description can't be shorter that 8 characters"
-        },
-        maxLength: {
-            value: 160,
-            message: "Description can't be longer than 80 characters"
-        }
-    },
-    text: {
-        validate: (value) => {
-            if (value.formatted) {
-                return (
-                    value.formatted.length > 50 ||
-                    'Post content must contain more than 50 characters'
-                );
-            }
-            return true;
-        }
-    }
-};
+import { DeletePopup } from './DeletePopup';
 
 export function EditPost() {
     const { id } = useParams();
+    const navigate = useNavigate();
 
     const { encodedToken } = useAuth();
     const {
@@ -49,17 +16,49 @@ export function EditPost() {
         isLoading,
         error
     } = useQuery({
-        queryKey: [`post_${id}`],
+        queryKey: ['post', id],
         queryFn: () => fetchPost(id, encodedToken)
     });
+
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    const queryClient = useQueryClient();
+    function handleUpdateStatus() {
+        queryClient.setQueryData(['post', id], (prev) => {
+            const newPost = { ...prev, is_published: !prev.is_published };
+            return newPost;
+        });
+    }
+
+    function handlePostUpdate(newPost) {
+        queryClient.setQueryData(['post', id], () => {
+            const { _id, title, summary, text, image, is_published } = newPost;
+            return { _id, title, summary, text, image, is_published };
+        });
+    }
 
     if (isLoading) return <p>loading...</p>;
     if (error) return <p>There was an error loading the post</p>;
     return (
-        <PostForm
-            post={post}
-            rules={post.is_published ? publishedValidations : {}}
-            onSubmit={(formData, token) => submitEditPost(id, formData, token)}
-        ></PostForm>
+        <>
+            {isDeleting && (
+                <DeletePopup
+                    title="Delete post"
+                    description="You are about to delete this post and it can't be recovered later. are you sure?"
+                    onClickOutside={() => setIsDeleting(false)}
+                    onDelete={() => submitDeletePost(id, encodedToken)}
+                    onSuccess={() => navigate('/posts')}
+                ></DeletePopup>
+            )}
+            <PostForm
+                post={post}
+                onSubmit={(formData, token) =>
+                    submitEditPost(id, formData, token)
+                }
+                onSuccess={handlePostUpdate}
+                onStatusUpdate={handleUpdateStatus}
+                onDelete={() => setIsDeleting(true)}
+            ></PostForm>
+        </>
     );
 }

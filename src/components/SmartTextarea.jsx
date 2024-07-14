@@ -7,7 +7,7 @@ function adjustTextareaHeight(textarea) {
     textarea.style.height = textarea.scrollHeight + 'px';
 }
 
-export function SmartTextarea({ control, rules, error }) {
+export function SmartTextarea({ control, rules = {}, error }) {
     const textareaRef = useRef(null);
 
     const {

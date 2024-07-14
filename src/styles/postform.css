@@ -1,0 +1,100 @@
+.post-form {
+    gap: var(--space-600);
+}
+
+.post-headings {
+    gap: var(--space-100);
+    max-width: 600px;
+}
+
+.post-headings input,
+.post-headings textarea {
+    font-weight: 500;
+    border: none;
+    padding: var(--space-100);
+    margin-left: calc(var(--space-100) * -1);
+}
+
+.post-headings .texarea-container {
+    height: fit-content;
+}
+.post-headings textarea {
+    height: auto;
+}
+.post-title-input {
+    font-size: 32px;
+    font-family: 'Playfair Display';
+    text-overflow: ellipsis;
+    color: var(--green-900);
+}
+
+.post-description-input {
+    font-size: 18px;
+    resize: none;
+    color: var(--dark-grey);
+    height: auto;
+    overflow-y: hidden;
+}
+
+.post-title-input:focus,
+.post-description-input:focus {
+    outline: 1px solid var(--main-grey);
+    border-radius: var(--space-300);
+}
+
+.save-post-button {
+    position: fixed;
+    bottom: var(--space-400);
+    right: var(--space-400);
+    z-index: 2;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.4);
+    transition: background-color 0.2s ease;
+    display: grid;
+}
+.save-post-button span:first-of-type {
+    visibility: hidden;
+}
+.save-post-button > * {
+    grid-area: 1/1/1/1;
+}
+.save-post-button.error {
+    background-color: var(--main-red);
+}
+
+.post-form-actions-grid {
+    display: grid;
+    grid-template-columns: max-content auto;
+    /* width: max-content; */
+    grid-template-rows: 1fr 1fr;
+    gap: var(--space-300);
+}
+.post-form-actions button {
+    font-size: 20px;
+    padding: 0 1.5em;
+    width: 100%;
+}
+
+.info-label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: var(--grey-900);
+
+    width: fit-content;
+    position: relative;
+}
+.info-label p {
+    padding-left: var(--space-100);
+    position: relative;
+
+    max-width: 0;
+    transition:
+        max-width 0.3s ease,
+        opacity 0.3s ease;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.info-label:hover p {
+    max-width: 100%;
+}

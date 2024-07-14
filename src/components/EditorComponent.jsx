@@ -3,9 +3,9 @@ import { submitImageUpload } from '../api/image';
 import { useAuth } from '../hooks/useAuth';
 import { useController } from 'react-hook-form';
 import { ErrorLabel } from './ErrorLabel';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
-export function EditorComponent({ control, rules, error }) {
+export function EditorComponent({ control, rules = {}, error }) {
     const { encodedToken } = useAuth();
     function handleImageUpload(blobInfo) {
         const formData = new FormData();
@@ -18,18 +18,27 @@ export function EditorComponent({ control, rules, error }) {
                 throw new Error('Error uploading image');
             });
     }
+
     const {
         field: { onChange, ref, value, onBlur },
         formState: { defaultValues }
     } = useController({ control, name: 'text', rules });
-    function handleEditorChange(text) {
-        if (editorRef.current) {
-            onChange({
-                html: text,
-                formatted: editorRef.current.getContent({ format: 'text' })
-            });
-        }
-    }
+
+    const handleEditorChange = useCallback(
+        (text) => {
+            const formattedHtml = text.replaceAll('\n', '\r\n');
+            if (editorRef.current && value.html !== formattedHtml) {
+                const formattedText = editorRef.current.getContent({
+                    format: 'text'
+                });
+                onChange({
+                    html: formattedHtml,
+                    formatted: formattedText
+                });
+            }
+        },
+        [onChange, value]
+    );
 
     const editorRef = useRef(null);
     useEffect(() => {
@@ -67,7 +76,6 @@ export function EditorComponent({ control, rules, error }) {
                         'fullscreen',
                         'insertdatetime',
                         'media',
-                        'table',
                         'code',
                         'help',
                         'wordcount'
@@ -84,7 +92,9 @@ export function EditorComponent({ control, rules, error }) {
                                             @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap');
                                             @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap')
                                             body { font-family: Poppins; font-size:14px; }`,
-                    images_upload_handler: handleImageUpload
+                    images_upload_handler: handleImageUpload,
+                    element_format: 'xhtml',
+                    entity_encoding: 'raw'
                 }}
             />
             {error && <ErrorLabel>{error}</ErrorLabel>}

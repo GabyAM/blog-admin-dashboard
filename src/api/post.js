@@ -85,7 +85,7 @@ export function submitEditPost(id, formData, token) {
             Authorization: `bearer ${token}`
         }
     }).then((res) => {
-        if (!res.ok) {
+        if (res.status === 500) {
             throw new Error('');
         }
         return res.json();

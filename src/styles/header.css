@@ -21,3 +21,35 @@ header .new-post-button {
 
     padding: var(--space-100) var(--space-400);
 }
+
+.header-user-card {
+    display: flex;
+    flex-direction: row;
+    max-width: 200px;
+    gap: var(--space-200);
+    border: none;
+    background-color: transparent;
+    text-align: start;
+    border-radius: var(--space-300);
+    position: relative;
+}
+
+.header-user-card .user-info {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.header-user-card .image-container,
+.header-user-card .image-container img {
+    width: 36px;
+    height: 36px;
+    border-radius: 100vh;
+}
+
+.user-info > span {
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

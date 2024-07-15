@@ -4,7 +4,13 @@ import { ErrorLabel } from './ErrorLabel';
 import { DeleteIcon } from './Icons';
 import { useClickOutside } from '../hooks/useClickOutside';
 
-export function DeletePopup({ title, description, onDelete, onClickOutside }) {
+export function DeletePopup({
+    title,
+    description,
+    onDelete,
+    onClickOutside,
+    onSuccess
+}) {
     const [error, setError] = useState(null);
     const [isDeleting, setIsDeleting] = useState(false);
     const ref = useClickOutside(onClickOutside);
@@ -17,6 +23,7 @@ export function DeletePopup({ title, description, onDelete, onClickOutside }) {
                 if (res.error) {
                     throw new Error(res.error);
                 }
+                onSuccess();
                 onClickOutside();
             })
             .catch((e) => setError(e.message))

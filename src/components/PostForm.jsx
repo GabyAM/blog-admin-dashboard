@@ -205,7 +205,7 @@ export function PostForm({
 
     return (
         <>
-            <button onClick={() => console.log(getValues())}>getValues</button>
+            {/* <button onClick={() => console.log(getValues())}>getValues</button> */}
             <form className="post-form flex-col">
                 <section>
                     <div className="flex-col post-headings">
@@ -242,8 +242,8 @@ export function PostForm({
                 </section>
                 <PostFormSubmitButton
                     disabled={
-                        !isDirty ||
-                        (post.is_published && !isValid) ||
+                        (post && !isDirty) ||
+                        (post && post.is_published && !isValid) ||
                         isSubmitting ||
                         (errors && errors.root)
                     }

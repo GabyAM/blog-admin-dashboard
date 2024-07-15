@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import he from 'he';
 import '../styles/postcard.css';
 import { useState } from 'react';
@@ -10,8 +10,11 @@ import {
     VerticalDotsIcon
 } from './Icons';
 import { PopupMenu } from './PopupMenu';
+import { useSearch } from '../hooks/useSearch';
 
 export function PostCard({ post, onToggleState, onDelete }) {
+    const navigate = useNavigate();
+    const { setSearch } = useSearch();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
@@ -52,13 +55,16 @@ export function PostCard({ post, onToggleState, onDelete }) {
                                 </>
                             )}
                         </button>
-                        <Link
+                        <button
                             className="popup-menu-option"
-                            to={`/post/${post._id}`}
+                            onClick={() => {
+                                navigate(`/post/${post._id}`);
+                                setSearch('');
+                            }}
                         >
                             <EditIcon></EditIcon>
                             <span>Edit</span>
-                        </Link>
+                        </button>
                         <button
                             onClick={() => {
                                 setIsMenuOpen(false);

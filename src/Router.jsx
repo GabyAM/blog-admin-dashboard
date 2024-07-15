@@ -9,6 +9,7 @@ import { Comments } from './components/Comments';
 import { RegularUsers } from './components/RegularUsers';
 import { Admins } from './components/Admins';
 import { BannedUsers } from './components/BannedUsers';
+import { CreatePost } from './components/CreatePost';
 import { AllUsers } from './components/AllUsers';
 import { Overview } from './components/Overview';
 
@@ -22,6 +23,7 @@ export function Router() {
                     index: true,
                     element: <Overview></Overview>
                 },
+                { path: '/post/create', element: <CreatePost></CreatePost> },
                 {
                     path: '/post/:id',
                     element: <EditPost></EditPost>

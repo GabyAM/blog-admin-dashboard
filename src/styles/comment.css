@@ -1,10 +1,7 @@
 .comment-container-wrapper {
     gap: var(--space-300);
 }
-.comment-container-wrapper.pending {
-    transition: opacity 0.3s ease;
-    opacity: 0.6;
-}
+
 .comment-container-wrapper h3 {
     color: var(--green-900);
 }
@@ -20,6 +17,7 @@
     grid-template-columns: 44px auto 24px;
     max-height: var(--space-900);
     gap: var(--space-200);
+    word-break: break-all;
 }
 .comment.deleted {
     grid-template-columns: auto 24px;
@@ -40,6 +38,7 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
+    line-clamp: 4;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -52,11 +51,6 @@
 .comment .image-container img {
     border-radius: var(--space-200);
 }
-
-.comment .text {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-100);
 
 .comment-text-upper-section {
     display: flex;

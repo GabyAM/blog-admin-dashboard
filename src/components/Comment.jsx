@@ -10,18 +10,18 @@ export function Comment({ comment, onEdit, onDelete }) {
     const [commentText, setCommentText] = useState(comment.text);
     const [isOverflown, setIsOverflown] = useState(false);
     const [textHidden, setTextHidden] = useState(true);
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         setCommentText(comment.text);
     }, [comment]);
     useEffect(() => {
-        if (text.current) {
+        if (text.current && !isEditing) {
             const textHeight = text.current.getBoundingClientRect().height;
             setIsOverflown(textHeight > 160);
         }
-    }, []);
+    }, [text, isEditing]);
 
-    const [isEditing, setIsEditing] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const isDeleted = comment.user === null;

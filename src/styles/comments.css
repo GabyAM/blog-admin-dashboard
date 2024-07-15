@@ -1,4 +1,7 @@
-.comments {
+.comments-container {
     max-width: 60%;
+}
+
+.comments {
     gap: var(--space-500);
 }

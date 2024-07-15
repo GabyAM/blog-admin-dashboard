@@ -1,22 +1,27 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AllPosts } from './AllPosts';
 import { Comments } from './Comments';
-import { Users } from './Users';
 import '../styles/searchresults.css';
 import { useSearch } from '../hooks/useSearch';
+import { AllUsers } from './AllUsers';
 
 const tabs = ['Posts', 'Users', 'Comments'];
+
 export function SearchResults() {
     const { search } = useSearch();
     const [currentTab, setCurrentTab] = useState('Posts');
-
-    const results = useMemo(() => {
-        return {
+    const [results, setResults] = useState({
+        Posts: null,
+        Comments: null,
+        Users: null
+    });
+    useEffect(() => {
+        setResults({
             Posts: <AllPosts></AllPosts>,
             Comments: <Comments></Comments>,
-            Users: <Users></Users>
-        };
-    }, [search]);
+            Users: <AllUsers></AllUsers>
+        });
+    }, [setResults, search]);
 
     const tabsRef = useRef({});
     const [underlineStyle, setUnderlineStyle] = useState({});
@@ -29,6 +34,7 @@ export function SearchResults() {
             });
         }
     }, [tabsRef, currentTab]);
+
     return (
         <>
             <ul className="tabs-list flex-row">

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import '../styles/popupmenu.css';
 import { useClickOutside } from '../hooks/useClickOutside';
 
@@ -6,7 +6,7 @@ export function PopupMenu({ children, onClickOutside }) {
     const ref = useClickOutside(onClickOutside);
 
     const [isLeft, setIsLeft] = useState(false);
-    function handlePositionMenu() {
+    const handlePositionMenu = useCallback(() => {
         if (ref.current) {
             const width = ref.current.getBoundingClientRect().width;
             const shouldBeLeft =
@@ -19,14 +19,14 @@ export function PopupMenu({ children, onClickOutside }) {
                 return prevIsLeft;
             });
         }
-    }
+    }, [ref]);
     useEffect(() => {
         handlePositionMenu();
-    }, [ref.current]);
+    }, [ref, handlePositionMenu]);
     useEffect(() => {
         window.addEventListener('resize', handlePositionMenu);
         return () => window.removeEventListener('resize', handlePositionMenu);
-    }, []);
+    }, [handlePositionMenu]);
 
     const filteredChildren = children.filter((children) => children !== false);
     return (

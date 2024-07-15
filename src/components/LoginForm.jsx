@@ -13,7 +13,7 @@ export function LoginForm() {
         if (token && !loading) {
             return navigate('/');
         }
-    }, [token, loading]);
+    }, [token, loading, navigate]);
 
     const {
         register,

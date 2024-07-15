@@ -7,17 +7,20 @@ export function SearchBar() {
     const [search, setSearch] = useState('');
 
     useEffect(() => {
-        if (contextSearch === '' && search !== '') {
-            setSearch('');
-        }
-    }, [contextSearch]);
+        setSearch((prev) => {
+            if (contextSearch !== prev) {
+                return contextSearch;
+            }
+            return prev;
+        });
+    }, [contextSearch, setSearch]);
     useEffect(() => {
         const timer = setTimeout(() => {
             setContextSearch(search);
         }, 500);
 
         return () => clearTimeout(timer);
-    }, [search]);
+    }, [search, setContextSearch]);
 
     return (
         <input

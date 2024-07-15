@@ -18,6 +18,6 @@ export function useClickOutside(onClickOutside) {
             document.removeEventListener('click', handleClickOutside);
             setIsMounted(false);
         };
-    }, [isMounted]);
+    }, [isMounted, onClickOutside]);
     return ref;
 }

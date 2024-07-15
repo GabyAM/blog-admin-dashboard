@@ -99,7 +99,7 @@ export function AuthProvider({ children }) {
             updateToken,
             removeToken
         }),
-        [token, loading]
+        [token, encodedToken, loading]
     );
 
     return (

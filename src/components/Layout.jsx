@@ -15,7 +15,7 @@ export function Layout() {
         if (!token && !loading) {
             return navigate('/login');
         }
-    }, [token, loading]);
+    }, [token, loading, navigate]);
     const { search } = useSearch();
     if (token && !loading) {
         return (

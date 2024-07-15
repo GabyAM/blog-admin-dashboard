@@ -4,13 +4,18 @@ import { useClickOutside } from '../hooks/useClickOutside';
 
 export function PopupMenu({ children, onClickOutside }) {
     const ref = useClickOutside(onClickOutside);
-
+    const [initialOffset, setInitialOffset] = useState(null);
     const [isLeft, setIsLeft] = useState(false);
     const handlePositionMenu = useCallback(() => {
         if (ref.current) {
+            setInitialOffset((prev) => {
+                if (prev === null) return ref.current.offsetLeft;
+                return prev;
+            });
             const width = ref.current.getBoundingClientRect().width;
             const shouldBeLeft =
-                ref.current.offsetLeft + width > window.innerWidth;
+                (initialOffset || ref.current.offsetLeft) + width >
+                window.innerWidth;
 
             setIsLeft((prevIsLeft) => {
                 if (prevIsLeft !== shouldBeLeft) {
@@ -19,7 +24,7 @@ export function PopupMenu({ children, onClickOutside }) {
                 return prevIsLeft;
             });
         }
-    }, [ref]);
+    }, [ref, initialOffset]);
     useEffect(() => {
         handlePositionMenu();
     }, [ref, handlePositionMenu]);

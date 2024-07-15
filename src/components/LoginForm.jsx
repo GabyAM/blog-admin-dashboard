@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import '../styles/loginform.css';
 import { ErrorLabel } from './ErrorLabel';
 import { submitLogin } from '../api/auth';
 

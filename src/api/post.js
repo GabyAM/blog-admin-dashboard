@@ -1,3 +1,5 @@
+import { ServerError } from '../utils/error';
+
 function fetchPosts(limit, pageParam, search, published, token) {
     let url = `http://localhost:3000/posts?limit=${limit}`;
     if (published != null) {
@@ -15,7 +17,7 @@ function fetchPosts(limit, pageParam, search, published, token) {
     }
     return fetch(url, options).then((res) => {
         if (!res.ok) {
-            throw new Error('');
+            throw new ServerError('Failed to fetch posts', res.status);
         }
         return res.json();
     });
@@ -41,7 +43,7 @@ export function fetchPost(id, token) {
     }
     return fetch(`http://localhost:3000/post/${id}`, options).then((res) => {
         if (!res.ok) {
-            throw new Error('');
+            throw new ServerError('Failed to fetch post', res.status);
         }
         return res.json();
     });
@@ -55,8 +57,8 @@ function updatePostStatus(id, token, action) {
             Authorization: `bearer ${token}`
         }
     }).then((res) => {
-        if (!res.ok && res.status === 500) {
-            throw new Error('');
+        if (!res.ok && res.status !== 400) {
+            throw new ServerError('failed to update post status', res.status);
         }
         return res.json();
     });
@@ -77,7 +79,7 @@ export function submitDeletePost(id, token) {
         headers: { Authorization: `bearer ${token}` }
     }).then((res) => {
         if (!res.ok) {
-            throw new Error('');
+            throw new ServerError('Failed to delete post', res.status);
         }
         return res.json();
     });
@@ -92,8 +94,8 @@ export function submitEditPost(id, formData, token) {
             Authorization: `bearer ${token}`
         }
     }).then((res) => {
-        if (res.status === 500) {
-            throw new Error('');
+        if (!res.ok && res.status !== 400) {
+            throw new ServerError('Failed to edit post', res.status);
         }
         return res.json();
     });
@@ -109,7 +111,7 @@ export function submitCreatePost(formData, token) {
         body: formData
     }).then((res) => {
         if (!res.ok) {
-            throw new Error('Failed at creating post');
+            throw new ServerError('Failed at creating post', res.status);
         }
         return res.json();
     });

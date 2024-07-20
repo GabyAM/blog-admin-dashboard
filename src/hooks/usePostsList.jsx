@@ -42,7 +42,8 @@ export function usePostsList({ type, enabled }) {
         queryFn: ({ pageParam }) => fetchFn(4, pageParam, search, encodedToken),
         initialPageParam: null,
         getNextPageParam: (lastPage) => lastPage.metadata.nextPageParams,
-        enabled
+        enabled,
+        refetchOnWindowFocus: false
     });
 
     const queryClient = useQueryClient();

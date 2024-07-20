@@ -22,6 +22,7 @@ export function AllPosts() {
             error={error}
             fetchNextPage={fetchNextPage}
             isFetchingNextPage={isFetchingNextPage}
+            isFetchNextPageError={isFetchNextPageError}
             hasNextPage={hasNextPage}
             updatePostStatus={handleUpdatePostStatus}
             deletePost={handleDeletePost}

@@ -1,0 +1,21 @@
+.info-card-container {
+    width: 100%;
+    max-width: 600px;
+    gap: var(--space-200);
+    font-size: 12px;
+    padding: var(--space-200) var(--space-500);
+    align-items: center;
+    border-radius: var(--space-100);
+    grid-column: 1/-1;
+}
+.info-card-container.centered {
+    margin: 0 auto;
+}
+.info-card-container.no-results {
+    background-color: var(--main-grey);
+    color: var(--grey-900);
+}
+.info-card-container.server-error {
+    background-color: var(--grey-900);
+    color: white;
+}

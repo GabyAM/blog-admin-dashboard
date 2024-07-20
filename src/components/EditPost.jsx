@@ -5,6 +5,7 @@ import { fetchPost, submitDeletePost, submitEditPost } from '../api/post';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { PostForm } from './PostForm';
 import { DeletePopup } from './DeletePopup';
+import { InfoCard } from './InfoCard';
 
 export function EditPost() {
     const { id } = useParams();
@@ -38,7 +39,7 @@ export function EditPost() {
     }
 
     if (isLoading) return <p>loading...</p>;
-    if (error) return <p>There was an error loading the post</p>;
+    if (error) return <InfoCard type="serverError"></InfoCard>;
     return (
         <>
             {isDeleting && (

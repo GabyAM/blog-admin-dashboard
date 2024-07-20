@@ -22,6 +22,7 @@ export function Drafts() {
             error={error}
             fetchNextPage={fetchNextPage}
             isFetchingNextPage={isFetchingNextPage}
+            isFetchNextPageError={isFetchNextPageError}
             hasNextPage={hasNextPage}
             updatePostStatus={(id) => handleUpdatePostStatus(id)}
             deletePost={(id) => handleDeletePost(id)}

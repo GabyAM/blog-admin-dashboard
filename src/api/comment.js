@@ -1,3 +1,5 @@
+import { ServerError } from '../utils/error';
+
 export function fetchComments(pageParam, limit, search) {
     let url = `http://localhost:3000/comments?limit=${limit}`;
     if (pageParam)
@@ -7,7 +9,7 @@ export function fetchComments(pageParam, limit, search) {
     }
     return fetch(url).then((res) => {
         if (!res.ok) {
-            throw new Error('');
+            throw new ServerError('Failed to fetch comments', res.status);
         }
         return res.json();
     });
@@ -24,7 +26,7 @@ export function submitEditComment(id, text, token) {
         body: JSON.stringify({ text })
     }).then((res) => {
         if (!res.ok) {
-            throw new Error('');
+            throw new ServerError('Failed to edit comment', res.status);
         }
         return res.json();
     });
@@ -40,7 +42,7 @@ export function submitDeleteComment(id, token) {
         }
     }).then((res) => {
         if (!res.ok) {
-            throw new Error('');
+            throw new ServerError('Failed to delete comment', res.status);
         }
         return res.json();
     });

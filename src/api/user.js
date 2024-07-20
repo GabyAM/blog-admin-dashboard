@@ -1,3 +1,5 @@
+import { ServerError } from '../utils/error';
+
 function fetchUsers(search, limit = 6, role) {
     let url = `http://localhost:3000/users?limit=${limit}`;
     if (role === 'user') {
@@ -12,7 +14,7 @@ function fetchUsers(search, limit = 6, role) {
     }
     return fetch(url).then((res) => {
         if (!res.ok) {
-            throw new Error('');
+            throw new ServerError('Failed to fetch users', res.status);
         }
         return res.json();
     });
@@ -47,7 +49,7 @@ export function updateUserRole(id, action, token) {
         }
     }).then((res) => {
         if (!res.ok) {
-            throw new Error('');
+            throw new ServerError('Failed to update user role', res.status);
         }
         return res.json();
     });
@@ -60,7 +62,7 @@ export function submitDeleteUser(id, token) {
         headers: { Authorization: `bearer ${token}` }
     }).then((res) => {
         if (!res.ok) {
-            throw new Error('');
+            throw new ServerError('Failed to delete user', res.status);
         }
         return res.json();
     });

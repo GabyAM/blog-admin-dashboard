@@ -23,6 +23,7 @@ export function PublishedPosts() {
             fetchNextPage={fetchNextPage}
             isFetchingNextPage={isFetchingNextPage}
             hasNextPage={hasNextPage}
+            isFetchNextPageError={isFetchNextPageError}
             updatePostStatus={handleUpdatePostStatus}
             deletePost={handleDeletePost}
         ></Posts>

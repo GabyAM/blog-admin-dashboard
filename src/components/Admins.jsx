@@ -20,7 +20,7 @@ export function Admins() {
             error={error}
             fetchNextPage={fetchNextPage}
             isFetchingNextPage={isFetchingNextPage}
-            nextPageError={isFetchNextPageError}
+            isFetchNextPageError={isFetchNextPageError}
             changeUserRole={handleChangeUserRole}
             deleteUser={handleDeleteUser}
         ></Users>

@@ -7,12 +7,12 @@ export function ConditionalPosts() {
         handleUpdatePostStatus: handleUpdateDraftStatus,
         handleDeletePost: handleDeleteDraft,
         ...draftProps
-    } = usePostsList({ published: false });
+    } = usePostsList({ type: 'unpublished' });
 
     const [shouldFetchPublished, setShouldFetchPublished] = useState(false);
     const { handleUpdatePostStatus, handleDeletePost, ...postProps } =
         usePostsList({
-            published: true,
+            type: 'published',
             enabled: shouldFetchPublished
         });
 

@@ -5,12 +5,12 @@ import { Users } from './Users';
 export function ConditionalUsers() {
     const [shouldFetchAdmins, setShouldFetchAdmins] = useState(false);
     const { handleDeleteUser, handleChangeUserRole, ...userProps } =
-        useUsersList({ type: 'regular_users' });
+        useUsersList({ type: 'user' });
     const {
         handleDeleteUser: handleDeleteAdmin,
         handleChangeUserRole: handleChangeAdminRole,
         ...adminProps
-    } = useUsersList({ type: 'admin_users', enabled: shouldFetchAdmins });
+    } = useUsersList({ type: 'admin', enabled: shouldFetchAdmins });
     // banned users are never fetched since there can't be no admins
 
     useEffect(() => {

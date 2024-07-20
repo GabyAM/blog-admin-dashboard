@@ -4,7 +4,6 @@ import { EditPost } from './components/EditPost';
 import { LoginForm } from './components/LoginForm';
 import { Drafts } from './components/Drafts';
 import { PublishedPosts } from './components/PublishedPosts';
-import { AllPosts } from './components/AllPosts';
 import { Comments } from './components/Comments';
 import { RegularUsers } from './components/RegularUsers';
 import { Admins } from './components/Admins';
@@ -30,7 +29,12 @@ export function Router() {
                 },
                 {
                     path: '/posts',
-                    element: <AllPosts></AllPosts>
+                    element: (
+                        <>
+                            <Drafts></Drafts>
+                            <PublishedPosts></PublishedPosts>
+                        </>
+                    )
                 },
                 {
                     path: '/posts/published',
@@ -46,7 +50,13 @@ export function Router() {
                 },
                 {
                     path: '/users',
-                    element: <AllUsers></AllUsers>
+                    element: (
+                        <>
+                            <RegularUsers></RegularUsers>
+                            <Admins></Admins>
+                            <BannedUsers></BannedUsers>
+                        </>
+                    )
                 },
                 {
                     path: '/users/regular',

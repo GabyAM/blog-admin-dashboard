@@ -12,7 +12,7 @@ export function PublishedPosts() {
         hasNextPage,
         handleUpdatePostStatus,
         handleDeletePost
-    } = usePostsList({ published: true });
+    } = usePostsList({ type: 'published' });
 
     return (
         <Posts
@@ -23,8 +23,8 @@ export function PublishedPosts() {
             fetchNextPage={fetchNextPage}
             isFetchingNextPage={isFetchingNextPage}
             hasNextPage={hasNextPage}
-            updatePostStatus={(id) => handleUpdatePostStatus(id)}
-            deletePost={(id) => handleDeletePost(id)}
+            updatePostStatus={handleUpdatePostStatus}
+            deletePost={handleDeletePost}
         ></Posts>
     );
 }

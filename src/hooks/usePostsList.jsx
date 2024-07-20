@@ -6,6 +6,7 @@ import {
     useQueryClient
 } from '@tanstack/react-query';
 import {
+    fetchAllPosts,
     fetchPublishedPosts,
     fetchUnpublishedPosts,
     submitDeletePost,
@@ -14,12 +15,17 @@ import {
 } from '../api/post';
 import { useSearch } from './useSearch';
 
-export function usePostsList({ published, enabled }) {
+export function usePostsList({ type, enabled }) {
+    // type: all || unpublished || published
+    // if type === all, otherKey = ['unpublished', 'published']
     const { encodedToken } = useAuth();
 
-    const fetchFn = published ? fetchPublishedPosts : fetchUnpublishedPosts;
-    const currentKey = published ? 'published_posts' : 'unpublished_posts';
-    const otherKey = published ? 'unpublished_posts' : 'published_posts';
+    const fetchFn =
+        type === 'all'
+            ? fetchAllPosts
+            : type === 'published'
+              ? fetchPublishedPosts
+              : fetchUnpublishedPosts;
 
     const { search } = useSearch();
 
@@ -32,7 +38,7 @@ export function usePostsList({ published, enabled }) {
         isFetchNextPageError,
         hasNextPage
     } = useInfiniteQuery({
-        queryKey: [currentKey, search],
+        queryKey: ['posts', type, search],
         queryFn: ({ pageParam }) => fetchFn(4, pageParam, search, encodedToken),
         initialPageParam: null,
         getNextPageParam: (lastPage) => lastPage.metadata.nextPageParams,
@@ -41,7 +47,7 @@ export function usePostsList({ published, enabled }) {
 
     const queryClient = useQueryClient();
     function updatePost(id, update) {
-        queryClient.setQueryData([currentKey, search], (prevData) => ({
+        queryClient.setQueryData(['posts', type, search], (prevData) => ({
             ...prevData,
             pages: prevData.pages.map((page) => ({
                 ...page,
@@ -53,7 +59,7 @@ export function usePostsList({ published, enabled }) {
     }
 
     function deletePost(id) {
-        queryClient.setQueryData([currentKey, search], (prevData) => ({
+        queryClient.setQueryData(['posts', type, search], (prevData) => ({
             ...prevData,
             pages: prevData.pages.map((page) => ({
                 ...page,
@@ -62,48 +68,67 @@ export function usePostsList({ published, enabled }) {
         }));
     }
 
-    const updatePostStatus = published
-        ? submitUnpublishPost
-        : submitPublishPost;
+    const updatePostStatus = (id, token, isPublished) =>
+        isPublished
+            ? submitUnpublishPost(id, token)
+            : submitPublishPost(id, token);
 
     const updateStatusMutation = useMutation({
         mutationKey: ['update_post_status'],
-        onMutate: (id) => updatePost(id, { isPending: true }),
-        mutationFn: (id) => updatePostStatus(id, encodedToken),
-        onSuccess: (data, id) => {
+        onMutate: ({ id }) => updatePost(id, { isPending: true }),
+        mutationFn: ({ id, isPublished }) =>
+            updatePostStatus(id, encodedToken, isPublished),
+        onSuccess: (data, { id, isPublished }) => {
             if (data.error) {
                 throw new Error(
                     "The post doesn't meet the requirements to be published"
                 );
             }
-            deletePost(id);
-            if (queryClient.getQueryData([otherKey, search])) {
-                queryClient.setQueryData([otherKey, search], (prevData) => {
-                    if (!prevData) return prevData;
-                    return {
-                        ...prevData,
-                        pages: prevData.pages.map((page, index) => {
-                            if (index === 0) {
-                                return {
-                                    ...page,
-                                    results: [data.post, ...page.results]
-                                };
-                            }
-                            return page;
-                        })
-                    };
+            let otherKey;
+            if (type !== 'all') {
+                deletePost(id);
+                otherKey = type === 'unpublished' ? 'published' : 'unpublished';
+            } else {
+                updatePost(id, {
+                    isPending: false,
+                    is_published: !isPublished
                 });
             }
+            if (
+                otherKey &&
+                queryClient.getQueryData(['posts', otherKey, search])
+            ) {
+                queryClient.setQueryData(
+                    ['posts', otherKey, search],
+                    (prevData) => {
+                        if (!prevData) return prevData;
+                        return {
+                            ...prevData,
+                            pages: prevData.pages.map((page, index) => {
+                                if (index === 0) {
+                                    return {
+                                        ...page,
+                                        results: [data.post, ...page.results]
+                                    };
+                                }
+                                return page;
+                            })
+                        };
+                    }
+                );
+            }
         },
-        onError: (e, id) => {
+        onError: (e, { id }) => {
             updatePost(id, { isPending: false });
         }
     });
 
-    function handleUpdatePostStatus(id) {
-        toast.promise(updateStatusMutation.mutateAsync(id), {
-            loading: published ? 'Unpublishing post...' : 'Publishing post...',
-            success: `Post ${published ? 'unpublished' : 'published'} successfully`,
+    function handleUpdatePostStatus(id, isPublished) {
+        toast.promise(updateStatusMutation.mutateAsync({ id, isPublished }), {
+            loading: isPublished
+                ? 'Unpublishing post...'
+                : 'Publishing post...',
+            success: `Post ${isPublished ? 'unpublished' : 'published'} successfully`,
             error: (error) => `${error.message}`
         });
     }

@@ -11,7 +11,7 @@ export function RegularUsers() {
         isFetchNextPageError,
         handleChangeUserRole,
         handleDeleteUser
-    } = useUsersList({ type: 'regular_users' });
+    } = useUsersList({ type: 'user' });
     return (
         <Users
             title="Users"

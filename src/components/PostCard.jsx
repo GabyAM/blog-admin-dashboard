@@ -39,7 +39,7 @@ export function PostCard({ post, onToggleState, onDelete }) {
                         <button
                             onClick={() => {
                                 setIsMenuOpen(false);
-                                onToggleState(post._id);
+                                onToggleState(post._id, post.is_published);
                             }}
                             className="popup-menu-option"
                         >

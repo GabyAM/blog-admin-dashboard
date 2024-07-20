@@ -12,7 +12,7 @@ export function Drafts() {
         hasNextPage,
         handleUpdatePostStatus,
         handleDeletePost
-    } = usePostsList({ published: false });
+    } = usePostsList({ type: 'unpublished' });
 
     return (
         <Posts

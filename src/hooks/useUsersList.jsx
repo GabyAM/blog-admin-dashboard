@@ -14,6 +14,8 @@ import {
 } from '../api/user';
 import toast from 'react-hot-toast';
 import { useSearch } from './useSearch';
+import { mapPagesResults } from '../utils/map';
+import he from 'he';
 
 export function useUsersList({ type, enabled = true }) {
     // type: all || user || admin || banned
@@ -38,7 +40,13 @@ export function useUsersList({ type, enabled = true }) {
         queryFn: () => fetchFn(6, search),
         initialPageParam: null,
         getNextPageParam: (lastPage) => lastPage.metadata.nextPageParams,
-        enabled
+        enabled,
+        select: (users) =>
+            mapPagesResults(users, (user) => ({
+                ...user,
+                name: he.unescape(user.name),
+                email: he.unescape(user.email)
+            }))
     });
 
     const queryClient = useQueryClient();

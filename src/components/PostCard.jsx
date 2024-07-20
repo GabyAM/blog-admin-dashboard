@@ -1,5 +1,4 @@
 import { Link, useNavigate } from 'react-router-dom';
-import he from 'he';
 import '../styles/postcard.css';
 import { useState } from 'react';
 import {
@@ -23,8 +22,8 @@ export function PostCard({ post, onToggleState, onDelete }) {
                 <img src={`http://localhost:3000${post.image}`}></img>
             </div>
             <div className="text-section flex-col">
-                <h2 className="title-primary">{he.decode(post.title)}</h2>
-                <p>{he.decode(post.summary)}</p>
+                <h2 className="title-primary">{post.title}</h2>
+                <p>{post.summary}</p>
             </div>
             <div className="options-section">
                 <button

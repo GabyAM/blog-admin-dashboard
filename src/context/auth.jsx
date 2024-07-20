@@ -6,6 +6,7 @@ import {
     useMemo,
     useState
 } from 'react';
+import he from 'he';
 
 export const AuthContext = createContext();
 
@@ -25,10 +26,12 @@ export function AuthProvider({ children }) {
     async function updateToken(newToken) {
         localStorage.setItem('jwt', newToken);
         const decodedToken = await getDecodedToken(newToken);
-        setToken(decodedToken);
         if (decodedToken) {
+            decodedToken.name = he.unescape(decodedToken.name);
+            decodedToken.email = he.unescape(decodedToken.email);
             setEncodedToken(newToken);
         }
+        setToken(decodedToken);
     }
 
     function removeToken() {
@@ -64,6 +67,10 @@ export function AuthProvider({ children }) {
         async function handleTokenChange() {
             const initialToken = localStorage.getItem('jwt');
             const decodedToken = await getDecodedToken(initialToken);
+            if (decodedToken) {
+                decodedToken.name = he.unescape(decodedToken.name);
+                decodedToken.email = he.unescape(decodedToken.email);
+            }
             setToken(decodedToken);
             if (decodedToken) {
                 setEncodedToken(initialToken);

@@ -14,10 +14,11 @@ import {
     submitUnpublishPost
 } from '../api/post';
 import { useSearch } from './useSearch';
+import { mapPagesResults } from '../utils/map';
+import he from 'he';
 
 export function usePostsList({ type, enabled }) {
     // type: all || unpublished || published
-    // if type === all, otherKey = ['unpublished', 'published']
     const { encodedToken } = useAuth();
 
     const fetchFn =
@@ -43,7 +44,16 @@ export function usePostsList({ type, enabled }) {
         initialPageParam: null,
         getNextPageParam: (lastPage) => lastPage.metadata.nextPageParams,
         enabled,
-        refetchOnWindowFocus: false
+        select: (posts) =>
+            mapPagesResults(posts, (post) => ({
+                ...post,
+                title: he.unescape(post.title),
+                summary: he.unescape(post.summary),
+                author: {
+                    ...post.author,
+                    name: he.unescape(post.author.name)
+                }
+            }))
     });
 
     const queryClient = useQueryClient();

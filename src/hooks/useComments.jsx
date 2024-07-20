@@ -11,6 +11,8 @@ import {
     submitEditComment
 } from '../api/comment';
 import { useSearch } from './useSearch';
+import he from 'he';
+import { mapPagesResults } from '../utils/map';
 
 export function useComments() {
     const { encodedToken } = useAuth();
@@ -28,7 +30,19 @@ export function useComments() {
         queryKey: ['comments', search],
         queryFn: ({ pageParam }) => fetchComments(pageParam, 4, search),
         initialPageParam: null,
-        getNextPageParam: (lastPage) => lastPage.metadata.nextPageParams
+        getNextPageParam: (lastPage) => lastPage.metadata.nextPageParams,
+        select: (comments) =>
+            mapPagesResults(comments, (comment) => ({
+                ...comment,
+                text: he.unescape(comment.text),
+                user: comment.user
+                    ? { ...comment.user, name: he.unescape(comment.user.name) }
+                    : null,
+                post: {
+                    ...comment.post,
+                    title: he.unescape(comment.post.title)
+                }
+            }))
     });
 
     const queryClient = useQueryClient();

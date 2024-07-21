@@ -19,7 +19,13 @@ export function PostCard({ post, onToggleState, onDelete }) {
     return (
         <div className={`post-card ${post.isPending ? 'pending' : ''}`}>
             <div className="post-thumbnail">
-                <img src={`http://localhost:3000${post.image}`}></img>
+                <img
+                    src={
+                        post.image === '/images/post_thumbnail_placeholder.png'
+                            ? '/src/assets/post_thumbnail_placeholder.png'
+                            : `http://localhost:3000${post.image}`
+                    }
+                ></img>
             </div>
             <div className="text-section flex-col">
                 <h2 className="title-primary">{post.title}</h2>

@@ -50,7 +50,14 @@ export function Comment({ comment, onEdit, onDelete }) {
                         ) : (
                             <>
                                 <div className="image-container">
-                                    <img src="/avatar.png"></img>
+                                    <img
+                                        src={
+                                            comment.user.image ===
+                                            '/images/profile.png'
+                                                ? '/src/assets/profile.png'
+                                                : `http://localhost:3000${comment.user.image}`
+                                        }
+                                    ></img>
                                 </div>
                                 <div className="comment-text">
                                     <div className="comment-text-upper-section">

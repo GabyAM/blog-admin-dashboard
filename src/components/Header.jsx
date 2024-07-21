@@ -29,7 +29,11 @@ export function Header() {
                 >
                     <div className="image-container">
                         <img
-                            src={`http://localhost:3000${currentUser.image}`}
+                            src={
+                                currentUser.image === '/images/profile.png'
+                                    ? '/src/assets/profile.png'
+                                    : `http://localhost:3000${currentUser.image}`
+                            }
                         ></img>
                     </div>
                     <div className="user-info">

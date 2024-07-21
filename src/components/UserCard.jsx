@@ -17,7 +17,13 @@ export function UserCard({ user, onChangeRole, onDelete }) {
     return (
         <div className={`user-card ${user.isPending ? 'pending' : ''}`}>
             <div className="image-container">
-                <img src={`http://localhost:3000${user.image}`}></img>
+                <img
+                    src={
+                        user.image === '/images/profile.png'
+                            ? '/src/assets/profile.png'
+                            : `http://localhost:3000${user.image}`
+                    }
+                ></img>
             </div>
             <div className="info-section flex-col">
                 <span className="user-name">{user.name}</span>

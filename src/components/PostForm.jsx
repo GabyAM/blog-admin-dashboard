@@ -13,7 +13,7 @@ const formDefaultValues = {
     title: '',
     summary: '',
     image: {
-        url: '/post_thumbnail_placeholder.png',
+        url: '/src/assets/post_thumbnail_placeholder.png',
         file: null
     },
     text: {

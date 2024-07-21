@@ -3,7 +3,7 @@ import '../styles/comment.css';
 import { useEffect, useRef, useState } from 'react';
 import { DeleteIcon, EditIcon, VerticalDotsIcon } from './Icons';
 import { PopupMenu } from './PopupMenu';
-import { formatDistanceToNow } from 'date-fns';
+import { formatDateToDistance } from '../utils/date';
 
 export function Comment({ comment, onEdit, onDelete }) {
     const text = useRef(null);
@@ -61,9 +61,9 @@ export function Comment({ comment, onEdit, onDelete }) {
                                             </span>
                                         )}
                                         <span className="timestamp-label">
-                                            {formatDistanceToNow(
+                                            {formatDateToDistance(
                                                 comment.createdAt
-                                            ) + ' ago'}
+                                            )}
                                         </span>
                                     </div>
                                     {isEditing ? (

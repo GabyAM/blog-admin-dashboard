@@ -55,6 +55,7 @@ ul {
 
 .title-primary {
     font-family: 'Playfair Display';
+    color: var(--green-900);
 }
 
 .flex-col {
@@ -108,8 +109,13 @@ ul {
     background: none;
 }
 
-.light-outline {
-    border-color: var(--green-100);
+.outlined-button-red {
+    border: 1px solid var(--main-red);
+    color: var(--main-red);
+    background: none;
+}
+.grey-outline {
+    border: 1px solid var(--grey-100);
 }
 
 .smaller {
@@ -131,6 +137,12 @@ ul {
     padding: 0 1em;
     width: fit-content;
 }
+.large {
+    font-size: 32px;
+    font-weight: 600;
+    padding: 0.25em 1.5em;
+    width: fit-content;
+}
 
 .rounded {
     border-radius: 100vh;
@@ -143,4 +155,24 @@ a.disabled {
     pointer-events: none;
 }
 
+.icon-container {
+    background: none;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    aspect-ratio: 1 / 1;
+}
+
+.more-button {
+    border-radius: 100vh;
+    transition: background-color 0.3s ease;
+}
+.more-button:hover {
+    background-color: var(--grey-100);
+}
+
+.pending {
+    transition: opacity 0.3s ease;
+    opacity: 0.6;
 }

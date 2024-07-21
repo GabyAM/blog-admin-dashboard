@@ -6,10 +6,12 @@
 
 .content-container {
     gap: var(--space-500);
+    position: relative;
 }
 
 .content-container .container {
     gap: var(--space-600);
+    z-index: 1;
     padding-bottom: var(--space-700);
 }
 
@@ -22,4 +24,8 @@ section {
 .section-title {
     font-size: 24px;
     font-weight: 500;
+}
+
+.toast {
+    position: absolute;
 }

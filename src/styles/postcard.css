@@ -40,6 +40,11 @@
     width: 120px;
 }
 
+.post-thumbnail img {
+    object-fit: cover;
+    border-radius: var(--space-300);
+}
+
 .post-card .actions {
     padding: 0.25em;
     gap: var(--space-200);

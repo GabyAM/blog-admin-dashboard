@@ -1,7 +1,6 @@
 .posts-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
 
     gap: var(--space-600);
     max-width: 100%;

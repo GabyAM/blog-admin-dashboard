@@ -11,12 +11,14 @@ import { BannedUsers } from './components/BannedUsers';
 import { CreatePost } from './components/CreatePost';
 import { AllUsers } from './components/AllUsers';
 import { Overview } from './components/Overview';
+import { ErrorCatcher } from './components/ErrorCatcher';
 
 export function Router() {
     const router = createBrowserRouter([
         {
             path: '/',
             element: <Layout></Layout>,
+            errorElement: <ErrorCatcher></ErrorCatcher>,
             children: [
                 {
                     index: true,

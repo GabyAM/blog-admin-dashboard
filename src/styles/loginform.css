@@ -34,7 +34,7 @@
 
 .form-input {
     width: 100%;
-    border: 1px solid var(--dark-grey);
+    border: 1px solid var(--grey-400);
     border-radius: var(--space-300);
     padding: 0.125em var(--space-300) 0.03125em;
     font-size: 20px;

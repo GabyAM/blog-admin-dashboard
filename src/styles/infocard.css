@@ -12,7 +12,7 @@
     margin: 0 auto;
 }
 .info-card-container.no-results {
-    background-color: var(--main-grey);
+    background-color: var(--grey-100);
     color: var(--grey-900);
 }
 .info-card-container.server-error {

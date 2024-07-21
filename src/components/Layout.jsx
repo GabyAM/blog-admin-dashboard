@@ -27,7 +27,7 @@ export function Layout() {
                         position="bottom-right"
                         toastOptions={{
                             style: {
-                                border: '1px solid var(--main-grey)',
+                                border: '1px solid var(--grey-100)',
                                 boxShadow: '2px 2px 6px rgba(0,0,0,0.2)'
                             }
                         }}

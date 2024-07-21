@@ -3,7 +3,7 @@ aside.main-navbar {
     position: sticky;
     top: 0;
     bottom: 0;
-    border-right: 1px solid var(--main-grey);
+    border-right: 1px solid var(--grey-100);
 
     padding: var(--space-500);
     gap: var(--space-700);
@@ -33,7 +33,7 @@ aside.main-navbar {
     padding: 0 var(--space-300);
 }
 .sub-sections-list > li a {
-    color: var(--dark-grey);
+    color: var(--grey-400);
     font-weight: 500;
     font-size: 18px;
 }

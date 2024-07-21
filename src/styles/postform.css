@@ -31,14 +31,14 @@
 .post-description-input {
     font-size: 18px;
     resize: none;
-    color: var(--dark-grey);
+    color: var(--grey-400);
     height: auto;
     overflow-y: hidden;
 }
 
 .post-title-input:focus,
 .post-description-input:focus {
-    outline: 1px solid var(--main-grey);
+    outline: 1px solid var(--grey-100);
     border-radius: var(--space-300);
 }
 

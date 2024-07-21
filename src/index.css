@@ -9,8 +9,9 @@
     --green-300: #73aa6e;
     --green-200: #92bd8f;
     --green-100: #b1d0af;
-    --main-grey: #edeeef;
-    --dark-grey: #9999a3;
+    --grey-900: #616167;
+    --grey-100: #edeeef;
+    --grey-400: #9999a3;
     --main-red: #ea7272;
 
     --space-100: 8px;
@@ -90,7 +91,7 @@ ul {
 }
 
 .tertiary-button {
-    background-color: var(--main-grey);
+    background-color: var(--grey-100);
     color: var(--green-900);
     border: none;
 }
@@ -124,7 +125,6 @@ ul {
     padding: 0.25em 0.8em;
     width: fit-content;
 }
-
 .medium {
     font-size: 24px;
     font-weight: 500;

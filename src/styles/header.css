@@ -16,7 +16,7 @@ header .new-post-button {
 
 .main-search-bar-section .main-search-bar {
     width: 100%;
-    border: 1px solid var(--dark-grey);
+    border: 1px solid var(--grey-400);
     border-radius: 100vh;
 
     padding: var(--space-100) var(--space-400);

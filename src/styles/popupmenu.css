@@ -11,12 +11,26 @@
     z-index: 10;
 }
 .popup-menu.hidden {
-    top: 0;
-    left: 0;
+    padding: 0;
+    width: 0;
+    max-width: 0;
+}
+.popup-menu.offscreen {
+    top: -9999px;
+    left: -9999px;
+}
+.popup-menu,
+.popup-menu.hidden,
+.popup-menu.offscreen {
     visibility: hidden;
 }
 .popup-menu.left {
     transform: translateX(-100%);
+    visibility: visible;
+}
+.popup-menu.left,
+.popup-menu.right {
+    visibility: visible;
 }
 
 .popup-menu-separator {

@@ -5,26 +5,25 @@ import { useClickOutside } from '../hooks/useClickOutside';
 export function PopupMenu({ children, onClickOutside }) {
     const ref = useClickOutside(onClickOutside);
     const [initialOffset, setInitialOffset] = useState(null);
-    const [isLeft, setIsLeft] = useState(false);
+    const [position, setPosition] = useState('hidden'); // hidden || offscreen || left || right
     const handlePositionMenu = useCallback(() => {
         if (ref.current) {
-            setInitialOffset((prev) => {
-                if (prev === null) return ref.current.offsetLeft;
-                return prev;
-            });
-            const width = ref.current.getBoundingClientRect().width;
-            const shouldBeLeft =
-                (initialOffset || ref.current.offsetLeft) + width >
-                window.innerWidth;
-
-            setIsLeft((prevIsLeft) => {
-                if (prevIsLeft !== shouldBeLeft) {
-                    return shouldBeLeft;
-                }
-                return prevIsLeft;
-            });
+            if (!initialOffset && position === 'hidden') {
+                setInitialOffset(ref.current.getBoundingClientRect().left);
+                setPosition('offscreen');
+            } else {
+                const width = ref.current.getBoundingClientRect().width;
+                const shouldBeLeft =
+                    initialOffset + width >
+                    document.documentElement.clientWidth;
+                setPosition((prev) => {
+                    const newPosition = shouldBeLeft ? 'left' : 'right';
+                    if (newPosition !== prev) return newPosition;
+                    return prev;
+                });
+            }
         }
-    }, [ref, initialOffset]);
+    }, [ref, initialOffset, position]);
     useEffect(() => {
         handlePositionMenu();
     }, [ref, handlePositionMenu]);
@@ -35,10 +34,7 @@ export function PopupMenu({ children, onClickOutside }) {
 
     const filteredChildren = children.filter((children) => children !== false);
     return (
-        <div
-            ref={ref}
-            className={`popup-menu ${!ref.current ? 'hidden' : ''} ${isLeft ? 'left' : ''}`}
-        >
+        <div ref={ref} className={`popup-menu ${position}`}>
             {filteredChildren.length &&
                 filteredChildren.map((element, index) => (
                     <Fragment key={index}>

@@ -6,6 +6,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { PostForm } from './PostForm';
 import { DeletePopup } from './DeletePopup';
 import { InfoCard } from './InfoCard';
+import he from 'he';
 
 export function EditPost() {
     const { id } = useParams();
@@ -18,7 +19,12 @@ export function EditPost() {
         error
     } = useQuery({
         queryKey: ['post', id],
-        queryFn: () => fetchPost(id, encodedToken)
+        queryFn: () => fetchPost(id, encodedToken),
+        select: (post) => ({
+            ...post,
+            title: he.unescape(post.title),
+            summary: he.unescape(post.summary)
+        })
     });
 
     const [isDeleting, setIsDeleting] = useState(false);

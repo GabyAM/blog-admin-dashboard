@@ -17,7 +17,7 @@ export function InfoCard({ type, centered = false, error }) {
                         There was an error trying to load this data, please
                         retry later.
                         <br />
-                        {`Error code: ${error.status}`}
+                        {error.status && `Error code: ${error.status}`}
                     </span>
                 </>
             ) : (

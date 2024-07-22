@@ -37,7 +37,7 @@ export function useUsersList({ type, enabled = true }) {
         hasNextPage
     } = useInfiniteQuery({
         queryKey: ['users', type, search],
-        queryFn: () => fetchFn(6, search),
+        queryFn: () => fetchFn(6, search, encodedToken),
         initialPageParam: null,
         getNextPageParam: (lastPage) => lastPage.metadata.nextPageParams,
         enabled,

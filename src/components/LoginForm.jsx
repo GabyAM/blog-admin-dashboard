@@ -55,47 +55,59 @@ export function LoginForm() {
                         className="flex-col"
                         onSubmit={handleSubmit(onSubmit)}
                     >
-                        <h2>Log in as an admin</h2>
-                        <div className="form-input-container">
-                            <input
-                                className="form-input"
-                                type="text"
-                                name="email"
-                                {...register('email', {
-                                    required: 'Email is required',
-                                    pattern: {
-                                        value: /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                                        message:
-                                            'Email must be in the correct format'
-                                    }
-                                })}
-                                placeholder="Email"
-                            />
-                            {errors.email && (
-                                <ErrorLabel>{errors.email.message}</ErrorLabel>
-                            )}
+                        <div className="info flex-row">
+                            <div className="green-line"></div>
+                            <div className="text">
+                                <h2>Log in as an admin</h2>
+                                <p>
+                                    or get limited access by logging in as a
+                                    user
+                                </p>
+                            </div>
                         </div>
-
-                        <div className="form-input-container">
-                            <input
-                                className="form-input"
-                                type="password"
-                                name="password"
-                                {...register('password', {
-                                    required: 'Password is required',
-                                    minLength: {
-                                        value: 8,
-                                        message:
-                                            'Password must have at least 8 characters'
-                                    }
-                                })}
-                                placeholder="Password"
-                            />
-                            {errors.password && (
-                                <ErrorLabel>
-                                    {errors.password.message}
-                                </ErrorLabel>
-                            )}
+                        <div className="inputs flex-col">
+                            <div className="form-input-container">
+                                <input
+                                    className="form-input"
+                                    type="text"
+                                    name="email"
+                                    {...register('email', {
+                                        required: 'Email is required',
+                                        pattern: {
+                                            value: /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                            message:
+                                                'Email must be in the correct format'
+                                        }
+                                    })}
+                                    placeholder="Email"
+                                />
+                                {errors.email && (
+                                    <ErrorLabel>
+                                        {errors.email.message}
+                                    </ErrorLabel>
+                                )}
+                            </div>
+                            <div className="form-input-container">
+                                <input
+                                    className="form-input"
+                                    type="password"
+                                    name="password"
+                                    {...register('password', {
+                                        required: 'Password is required',
+                                        minLength: {
+                                            value: 8,
+                                            message:
+                                                'Password must have at least 8 characters'
+                                        }
+                                    })}
+                                    placeholder="Password"
+                                />
+                                {errors.password && (
+                                    <ErrorLabel>
+                                        {errors.password.message}
+                                    </ErrorLabel>
+                                )}
+                            </div>
                         </div>
 
                         <button className="login-button">Log in</button>

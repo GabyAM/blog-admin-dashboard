@@ -21,21 +21,36 @@
     font-weight: 500;
 }
 
+.form-container .info {
+    gap: var(--space-100);
+}
+.form-container .info .green-line {
+    height: auto;
+    width: 6px;
+    background-color: var(--green-900);
+    border-radius: 100vh;
+}
+.form-container .info .text {
+    text-align: left;
+}
+.form-container form .inputs {
+    gap: var(--space-300);
+}
 .form-container h2 {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 400;
     color: var(--green-500);
 }
 
 .form-input-container {
     display: grid;
-    grid-template-rows: auto 18px;
+    grid-template-rows: auto auto;
 }
 
 .form-input {
     width: 100%;
     border: 1px solid var(--grey-400);
-    border-radius: var(--space-300);
+    border-radius: 100vh;
     padding: 0.125em var(--space-300) 0.03125em;
     font-size: 20px;
 }

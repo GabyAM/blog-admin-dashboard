@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import '../styles/popupmenu.css';
 import { useClickOutside } from '../hooks/useClickOutside';
 

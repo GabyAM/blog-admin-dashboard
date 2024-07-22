@@ -1,7 +1,8 @@
 import { ServerError } from '../utils/error';
+import API_URL from '../constants';
 
 function fetchUsers(search, limit = 6, role, token) {
-    let url = `http://localhost:3000/users?limit=${limit}`;
+    let url = API_URL + `/users?limit=${limit}`;
     if (role === 'user') {
         url += '&is_banned=false&is_admin=false';
     } else if (role === 'admin') {
@@ -42,7 +43,7 @@ export function fetchAllUsers(limit, search) {
 }
 
 export function updateUserRole(id, action, token) {
-    return fetch(`http://localhost:3000/user/${id}/${action}`, {
+    return fetch(API_URL + `/user/${id}/${action}`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -58,7 +59,7 @@ export function updateUserRole(id, action, token) {
 }
 
 export function submitDeleteUser(id, token) {
-    return fetch(`http://localhost:3000/user/${id}/delete`, {
+    return fetch(API_URL + `/user/${id}/delete`, {
         method: 'POST',
         credentials: 'include',
         headers: { Authorization: `bearer ${token}` }

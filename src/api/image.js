@@ -1,7 +1,8 @@
 import { ServerError } from '../utils/error';
+import API_URL from '../constants';
 
 export function submitImageUpload(formData, token) {
-    return fetch(`http://localhost:3000/image/upload`, {
+    return fetch(API_URL + `/image/upload`, {
         method: 'POST',
         credentials: 'include',
         body: formData,

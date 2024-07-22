@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useController } from 'react-hook-form';
 import { ErrorLabel } from './ErrorLabel';
 import { useCallback, useEffect, useRef } from 'react';
+import API_URL from '../constants';
 
 export function EditorComponent({ control, rules = {}, error }) {
     const { encodedToken } = useAuth();
@@ -12,7 +13,7 @@ export function EditorComponent({ control, rules = {}, error }) {
         formData.append('image', blobInfo.blob(), blobInfo.filename());
         return submitImageUpload(formData, encodedToken)
             .then((data) => {
-                return `http://localhost:3000${data.url}`;
+                return API_URL + data.url;
             })
             .catch((e) => {
                 throw new Error('Error uploading image');

@@ -1,5 +1,7 @@
+import API_URL from '../constants';
+
 export function submitErrorLog(error) {
-    return fetch('http://localhost:3000/error/log', {
+    return fetch(API_URL + '/error/log', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: error.message, stack: error.stack })

@@ -1,7 +1,8 @@
 import { ServerError } from '../utils/error';
+import API_URL from '../constants';
 
 function fetchPosts(limit, pageParam, search, published, token) {
-    let url = `http://localhost:3000/posts?limit=${limit}`;
+    let url = API_URL + `/posts?limit=${limit}`;
     if (published != null) {
         url += `&is_published=${published}`;
     }
@@ -41,7 +42,7 @@ export function fetchPost(id, token) {
         options.credentials = 'include';
         options.headers = { Authorization: `bearer ${token}` };
     }
-    return fetch(`http://localhost:3000/post/${id}`, options).then((res) => {
+    return fetch(API_URL + `/post/${id}`, options).then((res) => {
         if (!res.ok) {
             throw new ServerError('Failed to fetch post', res.status);
         }
@@ -50,7 +51,7 @@ export function fetchPost(id, token) {
 }
 
 function updatePostStatus(id, token, action) {
-    return fetch(`http://localhost:3000/post/${id}/${action}`, {
+    return fetch(API_URL + `/post/${id}/${action}`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -73,7 +74,7 @@ export function submitPublishPost(id, token) {
 }
 
 export function submitDeletePost(id, token) {
-    return fetch(`http://localhost:3000/post/${id}/delete`, {
+    return fetch(API_URL + `/post/${id}/delete`, {
         method: 'POST',
         credentials: 'include',
         headers: { Authorization: `bearer ${token}` }
@@ -86,7 +87,7 @@ export function submitDeletePost(id, token) {
 }
 
 export function submitEditPost(id, formData, token) {
-    return fetch(`http://localhost:3000/post/${id}/update`, {
+    return fetch(API_URL + `/post/${id}/update`, {
         method: 'POST',
         credentials: 'include',
         body: formData,
@@ -102,7 +103,7 @@ export function submitEditPost(id, formData, token) {
 }
 
 export function submitCreatePost(formData, token) {
-    return fetch('http://localhost:3000/post', {
+    return fetch(API_URL + '/post', {
         method: 'POST',
         credentials: 'include',
         headers: {

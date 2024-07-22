@@ -7,6 +7,7 @@ import {
     useState
 } from 'react';
 import he from 'he';
+import API_URL from '../constants';
 
 export const AuthContext = createContext();
 
@@ -42,7 +43,7 @@ export function AuthProvider({ children }) {
 
     const refresh = useCallback(async () => {
         try {
-            const response = await fetch('http://localhost:3000/refresh', {
+            const response = await fetch(API_URL + '/refresh', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

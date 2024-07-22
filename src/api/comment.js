@@ -1,7 +1,8 @@
 import { ServerError } from '../utils/error';
+import API_URL from '../constants';
 
 export function fetchComments(pageParam, limit, search) {
-    let url = `http://localhost:3000/comments?limit=${limit}`;
+    let url = API_URL + `/comments?limit=${limit}`;
     if (pageParam)
         url += `&lastId=${pageParam._id}&lastCreatedAt=${pageParam.createdAt}`;
     if (search) {
@@ -16,7 +17,7 @@ export function fetchComments(pageParam, limit, search) {
 }
 
 export function submitEditComment(id, text, token) {
-    return fetch(`http://localhost:3000/comment/${id}/update`, {
+    return fetch(API_URL + `/comment/${id}/update`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -33,7 +34,7 @@ export function submitEditComment(id, text, token) {
 }
 
 export function submitDeleteComment(id, token) {
-    return fetch(`http://localhost:3000/comment/${id}/delete`, {
+    return fetch(API_URL + `/comment/${id}/delete`, {
         method: 'POST',
         credentials: 'include',
         headers: {

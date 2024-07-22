@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { PopupMenu } from './PopupMenu';
 import { LogoutIcon, ProfileIcon } from './Icons';
 import { SearchBar } from './SearchBar';
+import API_URL from '../constants';
 
 export function Header() {
     const navigate = useNavigate();
@@ -32,7 +33,7 @@ export function Header() {
                             src={
                                 currentUser.image === '/images/profile.png'
                                     ? '/src/assets/profile.png'
-                                    : `http://localhost:3000${currentUser.image}`
+                                    : API_URL + currentUser.image
                             }
                         ></img>
                     </div>

@@ -10,6 +10,7 @@ import {
 } from './Icons';
 import { PopupMenu } from './PopupMenu';
 import { useAuth } from '../hooks/useAuth';
+import API_URL from '../constants';
 
 export function UserCard({ user, onChangeRole, onDelete }) {
     const { token: currentUser } = useAuth();
@@ -21,7 +22,7 @@ export function UserCard({ user, onChangeRole, onDelete }) {
                     src={
                         user.image === '/images/profile.png'
                             ? '/src/assets/profile.png'
-                            : `http://localhost:3000${user.image}`
+                            : API_URL + user.image
                     }
                 ></img>
             </div>

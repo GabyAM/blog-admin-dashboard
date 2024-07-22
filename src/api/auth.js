@@ -1,3 +1,5 @@
+import API_URL from '../constants';
+
 export function submitLogin(formData) {
     return fetch('http://localhost:3000/login', {
         method: 'POST',

@@ -8,6 +8,7 @@ import { SmartTextarea } from './SmartTextarea';
 import { ErrorLabel } from './ErrorLabel';
 import { PostFormActions } from './PostFormActions';
 import { PostFormSubmitButton } from './PostFormSubmitButton';
+import API_URL from '../constants';
 
 const formDefaultValues = {
     title: '',
@@ -160,7 +161,7 @@ export function PostForm({
                 title: post.title,
                 summary: post.summary,
                 image: {
-                    url: `http://localhost:3000${post.image}`,
+                    url: API_URL + post.image,
                     file: null
                 },
                 text: {

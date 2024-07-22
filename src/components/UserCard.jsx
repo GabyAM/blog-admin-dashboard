@@ -11,6 +11,7 @@ import {
 import { PopupMenu } from './PopupMenu';
 import { useAuth } from '../hooks/useAuth';
 import API_URL from '../constants';
+import avatarPlaceholder from '../assets/profile.png';
 
 export function UserCard({ user, onChangeRole, onDelete }) {
     const { token: currentUser } = useAuth();
@@ -21,7 +22,7 @@ export function UserCard({ user, onChangeRole, onDelete }) {
                 <img
                     src={
                         user.image === '/images/profile.png'
-                            ? '/src/assets/profile.png'
+                            ? avatarPlaceholder
                             : API_URL + user.image
                     }
                 ></img>

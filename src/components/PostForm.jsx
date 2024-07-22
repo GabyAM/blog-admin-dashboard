@@ -9,12 +9,13 @@ import { ErrorLabel } from './ErrorLabel';
 import { PostFormActions } from './PostFormActions';
 import { PostFormSubmitButton } from './PostFormSubmitButton';
 import API_URL from '../constants';
+import postThumbnailPlaceholder from '../assets/post_thumbnail_placeholder.png';
 
 const formDefaultValues = {
     title: '',
     summary: '',
     image: {
-        url: '/src/assets/post_thumbnail_placeholder.png',
+        url: postThumbnailPlaceholder,
         file: null
     },
     text: {

@@ -6,6 +6,7 @@ import { PopupMenu } from './PopupMenu';
 import { LogoutIcon, ProfileIcon } from './Icons';
 import { SearchBar } from './SearchBar';
 import API_URL from '../constants';
+import avatarPlaceholder from '../assets/profile.png';
 
 export function Header() {
     const navigate = useNavigate();
@@ -32,7 +33,7 @@ export function Header() {
                         <img
                             src={
                                 currentUser.image === '/images/profile.png'
-                                    ? '/src/assets/profile.png'
+                                    ? avatarPlaceholder
                                     : API_URL + currentUser.image
                             }
                         ></img>

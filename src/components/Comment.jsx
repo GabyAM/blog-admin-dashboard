@@ -4,6 +4,7 @@ import { DeleteIcon, EditIcon, VerticalDotsIcon } from './Icons';
 import { PopupMenu } from './PopupMenu';
 import { formatDateToDistance } from '../utils/date';
 import API_URL from '../constants';
+import avatarPlaceholder from '../assets/profile.png';
 
 export function Comment({ comment, onEdit, onDelete }) {
     const text = useRef(null);
@@ -54,7 +55,7 @@ export function Comment({ comment, onEdit, onDelete }) {
                                         src={
                                             comment.user.image ===
                                             '/images/profile.png'
-                                                ? '/src/assets/profile.png'
+                                                ? avatarPlaceholder
                                                 : API_URL + comment.user.image
                                         }
                                     ></img>

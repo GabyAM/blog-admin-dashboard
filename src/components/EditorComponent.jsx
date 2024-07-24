@@ -8,18 +8,21 @@ import { IMAGES_URL } from '../constants';
 
 export function EditorComponent({ control, rules = {}, error }) {
     const { encodedToken } = useAuth();
-    function handleImageUpload(blobInfo) {
-        const formData = new FormData();
-        formData.append('image', blobInfo.blob(), blobInfo.filename());
-        return submitImageUpload(formData, encodedToken)
-            .then((data) => {
-                return API_URL + data.url;
-            })
-            .catch((e) => {
-                throw new Error('Error uploading image');
-            });
-    }
 
+    const handleImageUpload = useCallback(
+        (blobInfo) => {
+            const formData = new FormData();
+            formData.append('image', blobInfo.blob(), blobInfo.filename());
+            return submitImageUpload(formData, encodedToken)
+                .then((data) => {
+                    return IMAGES_URL + data.url;
+                })
+                .catch((e) => {
+                    throw new Error('Error uploading image');
+                });
+        },
+        [encodedToken]
+    );
     const {
         field: { onChange, ref, value, onBlur },
         formState: { defaultValues }

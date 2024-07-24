@@ -45,7 +45,13 @@ export function Header() {
                 </button>
                 {isMenuOpen && (
                     <PopupMenu onClickOutside={() => setIsMenuOpen(false)}>
-                        <Link className="popup-menu-option">
+                        <Link
+                            to={
+                                'https://theblog-gabyams-projects.vercel.app/user/' +
+                                currentUser.id
+                            }
+                            className="popup-menu-option"
+                        >
                             <ProfileIcon></ProfileIcon>
                             <span>Profile</span>
                         </Link>

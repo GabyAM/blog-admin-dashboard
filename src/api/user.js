@@ -38,8 +38,8 @@ export function fetchBannedUsers(limit, search, token) {
     return fetchUsers(search, limit, 'banned', token);
 }
 
-export function fetchAllUsers(limit, search) {
-    return fetchUsers(search, limit, 'all');
+export function fetchAllUsers(limit, search, token) {
+    return fetchUsers(search, limit, 'all', token);
 }
 
 export function updateUserRole(id, action, token) {

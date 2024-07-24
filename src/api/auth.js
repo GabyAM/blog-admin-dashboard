@@ -1,4 +1,4 @@
-import API_URL from '../constants';
+import { API_URL } from '../constants';
 
 export function submitLogin(formData) {
     return fetch(API_URL + '/login', {

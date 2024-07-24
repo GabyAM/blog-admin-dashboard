@@ -4,7 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useController } from 'react-hook-form';
 import { ErrorLabel } from './ErrorLabel';
 import { useCallback, useEffect, useRef } from 'react';
-import API_URL from '../constants';
+import { IMAGES_URL } from '../constants';
 
 export function EditorComponent({ control, rules = {}, error }) {
     const { encodedToken } = useAuth();

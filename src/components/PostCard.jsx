@@ -10,7 +10,7 @@ import {
 } from './Icons';
 import { PopupMenu } from './PopupMenu';
 import { useSearch } from '../hooks/useSearch';
-import API_URL from '../constants';
+import { IMAGES_URL } from '../constants';
 import postThumbnailPlaceholder from '../assets/post_thumbnail_placeholder.png';
 
 export function PostCard({ post, onToggleState, onDelete }) {
@@ -25,7 +25,7 @@ export function PostCard({ post, onToggleState, onDelete }) {
                     src={
                         post.image === '/images/post_thumbnail_placeholder.png'
                             ? postThumbnailPlaceholder
-                            : API_URL + post.image
+                            : IMAGES_URL + post.image
                     }
                 ></img>
             </div>

@@ -1,5 +1,5 @@
 import { ServerError } from '../utils/error';
-import API_URL from '../constants';
+import { API_URL } from '../constants';
 
 export function fetchComments(pageParam, limit, search) {
     let url = API_URL + `/comments?limit=${limit}`;

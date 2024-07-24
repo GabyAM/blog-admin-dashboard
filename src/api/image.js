@@ -1,5 +1,5 @@
 import { ServerError } from '../utils/error';
-import API_URL from '../constants';
+import { API_URL } from '../constants';
 
 export function submitImageUpload(formData, token) {
     return fetch(API_URL + `/image/upload`, {

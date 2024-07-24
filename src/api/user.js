@@ -1,5 +1,5 @@
 import { ServerError } from '../utils/error';
-import API_URL from '../constants';
+import { API_URL } from '../constants';
 
 function fetchUsers(search, limit = 6, role, token) {
     let url = API_URL + `/users?limit=${limit}`;

@@ -10,7 +10,7 @@ import {
 } from './Icons';
 import { PopupMenu } from './PopupMenu';
 import { useAuth } from '../hooks/useAuth';
-import API_URL from '../constants';
+import { IMAGES_URL } from '../constants';
 import avatarPlaceholder from '../assets/profile.png';
 
 export function UserCard({ user, onChangeRole, onDelete }) {
@@ -23,7 +23,7 @@ export function UserCard({ user, onChangeRole, onDelete }) {
                     src={
                         user.image === '/images/profile.png'
                             ? avatarPlaceholder
-                            : API_URL + user.image
+                            : IMAGES_URL + user.image
                     }
                 ></img>
             </div>

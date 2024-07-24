@@ -7,7 +7,7 @@ import {
     useState
 } from 'react';
 import he from 'he';
-import API_URL from '../constants';
+import { API_URL } from '../constants';
 
 export const AuthContext = createContext();
 

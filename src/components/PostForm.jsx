@@ -8,7 +8,7 @@ import { SmartTextarea } from './SmartTextarea';
 import { ErrorLabel } from './ErrorLabel';
 import { PostFormActions } from './PostFormActions';
 import { PostFormSubmitButton } from './PostFormSubmitButton';
-import API_URL from '../constants';
+import { IMAGES_URL } from '../constants';
 import postThumbnailPlaceholder from '../assets/post_thumbnail_placeholder.png';
 
 const formDefaultValues = {
@@ -162,7 +162,7 @@ export function PostForm({
                 title: post.title,
                 summary: post.summary,
                 image: {
-                    url: API_URL + post.image,
+                    url: IMAGES_URL + post.image,
                     file: null
                 },
                 text: {

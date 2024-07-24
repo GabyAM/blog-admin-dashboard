@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { PopupMenu } from './PopupMenu';
 import { LogoutIcon, ProfileIcon } from './Icons';
 import { SearchBar } from './SearchBar';
-import API_URL from '../constants';
+import { IMAGES_URL } from '../constants';
 import avatarPlaceholder from '../assets/profile.png';
 
 export function Header() {
@@ -34,7 +34,7 @@ export function Header() {
                             src={
                                 currentUser.image === '/images/profile.png'
                                     ? avatarPlaceholder
-                                    : API_URL + currentUser.image
+                                    : IMAGES_URL + currentUser.image
                             }
                         ></img>
                     </div>

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { DeleteIcon, EditIcon, VerticalDotsIcon } from './Icons';
 import { PopupMenu } from './PopupMenu';
 import { formatDateToDistance } from '../utils/date';
-import API_URL from '../constants';
+import { IMAGES_URL } from '../constants';
 import avatarPlaceholder from '../assets/profile.png';
 
 export function Comment({ comment, onEdit, onDelete }) {
@@ -56,7 +56,8 @@ export function Comment({ comment, onEdit, onDelete }) {
                                             comment.user.image ===
                                             '/images/profile.png'
                                                 ? avatarPlaceholder
-                                                : API_URL + comment.user.image
+                                                : IMAGES_URL +
+                                                  comment.user.image
                                         }
                                     ></img>
                                 </div>

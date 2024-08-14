@@ -55,7 +55,7 @@ export function EditorComponent({ control, rules = {}, error }) {
     return (
         <>
             <Editor
-                apiKey={process.env.TINYMCE_EDITOR_API_KEY}
+                apiKey={import.meta.env.TINYMCE_EDITOR_API_KEY}
                 onInit={(evt, editor) => (editorRef.current = editor)}
                 initialValue={defaultValues.text.html}
                 onEditorChange={handleEditorChange}
